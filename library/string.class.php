@@ -33,17 +33,17 @@ class String extends stdClass
      }
 
      /**
-      * Function
+      * Function overload to create dyanmic function
       *
-      * @return
+      * @return mixed
       *
-      * @param
+      * @param array
       */
         public function __call($function, $params)
         {
 
              $method = $this->$function->bindto($this);
-             call_user_func_array($method, $params);
+            return call_user_func_array($method, $params);
 
         }
 

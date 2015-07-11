@@ -129,4 +129,26 @@ class StringTest extends PHPUnit_Framework_TestCase
             $this->assertCount(2, $string->split(' '));
             $this->assertCount(13, $string->split());
         }
+        public function testDynamic()
+	{
+            $string = new String("Test14 Test14");
+
+	    $string->x=1;
+
+            $string->y=function($xxx){
+
+                $xx=$this->x + $xxx;
+
+                return $xx;
+
+            };
+
+
+            $this->assertEquals(1, $string->x);
+
+            $this->assertEquals(2, $string->y(1));
+
+
+        }
 }
+
