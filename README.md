@@ -3,6 +3,7 @@
 
 <p>This is an attempt to answer the question, what don't you like about php?</p>
 
-<p>A library to try and fix whats wrong.</p>
+<p>I have heard that question six times from six different people.</p>
 
+<p>A library to try and fix whats wrong.</p>
 
