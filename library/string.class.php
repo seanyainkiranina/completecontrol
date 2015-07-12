@@ -19,6 +19,7 @@ class String extends stdClass
      private $_token = null;
      private $_position_in_string = 0;
      private $_mutable = false;
+     private $_objectid = '0715221c-59e8-9589-434093851da8';
 
      /**
       * Function constructor
@@ -29,7 +30,21 @@ class String extends stdClass
       */
      public function __construct($string = null)
      {
-               $this->_string=$string;
+            $this->_string=$this->_toString($string);
+     }
+
+     
+     /**
+      * Function getObjectID unique id to this class.
+      *
+      * @return string
+      * 
+      */
+      public function getObjectID()
+      {
+
+          return $_objectid;
+
      }
 
      /**
@@ -75,8 +90,7 @@ class String extends stdClass
       */
         public function set($string)
         {
-
-            $this->_string=$string;
+            $this->_string=$this->_toString($string);
 
         }
      /**
@@ -103,6 +117,7 @@ class String extends stdClass
       */
         public function concat($string)
         {
+            $string=$this->_toString($string);
 
             if ($this->_string==null) {
                  throw new Exception('Empty string');
@@ -130,6 +145,8 @@ class String extends stdClass
       */
         public function contains($searchString, $ignorecase = false)
         {
+            $searchString=$this->_toString($searchString);
+
             if ($this->_string==null) {
                  throw new Exception('Empty string');
             }
@@ -189,6 +206,7 @@ class String extends stdClass
       */
         public function strstr($needle, $before_needle = false)
         {
+            $needle=$this->_toString($needle);
 
             if ($this->_string==null) {
                  throw new Exception('Empty string');
@@ -313,6 +331,12 @@ class String extends stdClass
             $count = null,
             $ignore_case = false
         ) {
+
+            $search=$this->_toString($search);
+
+            $replace=$this->_toString($replace);
+
+
          if ($this->_string==null) {
                throw new Exception('Empty string');
             }
@@ -370,6 +394,7 @@ class String extends stdClass
 
         public function similar($string)
         {
+            $string=$this->_toString($string);
 
             return similar_text($this->get(), $string);
 
@@ -385,6 +410,7 @@ class String extends stdClass
         public function compare($string)
         {
         
+            $string=$this->_toString($string);
 
             if ($this->_string==$string) {
                   return true;
@@ -448,6 +474,8 @@ class String extends stdClass
      */
         public function quote($charlist = null)
         {
+            $charlist=$this->_toString($charlist);
+
             if ($this->_string==null) {
                 throw new Exception('Empty string');
             }
@@ -468,6 +496,7 @@ class String extends stdClass
     */
         public function trim($character_mask = null, $left = false)
         {
+            $character_mask=$this->_toString($character_mask);
 
             if ($left==false) {
                 if ($character_mask==null) {
@@ -502,6 +531,8 @@ class String extends stdClass
     */
         public function split($delimiter = null, $limit = null)
         {
+            $delimiter=$this->_toString($delimiter);
+
             if ($this->_string==null) {
                 throw new Exception('Empty string');
             }
@@ -534,6 +565,31 @@ class String extends stdClass
 
              return explode($delimiter, $this->_string, $limit);
 
+
+        }
+   
+        
+     /**
+      * Function  _toString polymorphic 
+      *
+      * @return string
+      * 
+      * @param String object | string | null
+      */
+         private function _toString($string){
+
+           if ($string == null)
+                 return null;
+
+           if (is_string($string))
+                return $string;
+
+           if (is_object($string))
+                if (method_exists($string,"getObjectID"))
+                   if ($this->_objectid == $string->getObjectID())
+                                 return $string->get();
+
+           throw new Exception('String Parameter Error');
 
         }
 
