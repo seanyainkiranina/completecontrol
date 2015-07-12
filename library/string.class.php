@@ -31,21 +31,21 @@ class String extends stdClass
      public function __construct($string = null)
      {
             $this->_string=$this->_toString($string);
-     }
+        }
 
      
      /**
       * Function getObjectID unique id to this class.
       *
       * @return string
-      * 
+      *
       */
-      public function getObjectID()
-      {
+        public function getObjectID()
+        {
 
-          return $_objectid;
+            return $_objectid;
 
-     }
+        }
 
      /**
       * Function overload to create dyanmic function
@@ -63,12 +63,12 @@ class String extends stdClass
         }
 
      /**
-      * Function get 
+      * Function get
       *
       * @return string
       *
       * @throw 'Empty string'
-      * 
+      *
       * @param null
       */
         public function get()
@@ -111,7 +111,7 @@ class String extends stdClass
      /**
       * Function concat joins string passed to internal string
       *
-      * @return string 
+      * @return string
       *
       * @param string
       */
@@ -139,7 +139,7 @@ class String extends stdClass
       *
       * @return bool
       *
-      * @param string 
+      * @param string
       * @param bool case insensitive
       *
       */
@@ -223,7 +223,7 @@ class String extends stdClass
         }
    
      /**
-      * Function substr 
+      * Function substr
       *
       * @param string
       *
@@ -401,7 +401,7 @@ class String extends stdClass
         }
 
      /**
-      * Function compares string wrapper for == 
+      * Function compares string wrapper for ==
       *
       * @return bool
       *
@@ -570,72 +570,78 @@ class String extends stdClass
    
         
      /**
-      * Function  _toString polymorphic 
+      * Function  _toString polymorphic
       *
       * @return string
-      * 
+      *
       * @param String object | string | null
       */
-         private function _toString($string){
+         private function _toString($string)
+         {
 
-           if ($string == null)
+            if ($string == null) {
                  return null;
+            }
 
-           if (is_string($string))
+            if (is_string($string)) {
                 return $string;
+            }
 
-           if (is_object($string))
-                if (method_exists($string,"getObjectID"))
-                   if ($this->_objectid == $string->getObjectID())
+            if (is_object($string)) {
+                if (method_exists($string, "getObjectID")) {
+                    if ($this->_objectid == $string->getObjectID()) {
                                  return $string->get();
+                    }
+                }
+            }
 
-           throw new Exception('String Parameter Error');
+            throw new Exception('String Parameter Error');
 
-        }
+         }
 
     /**
     * Wrapper for strtok
     *
     */
-        public function token($token = null)
-        {
-            if ($this->_string==null) {
-                throw new Exception('Empty string');
-            }
-
-            if ($this->_token==null) {
-                if ($token==null) {
-                    throw new Exception('Empty token');
+            public function token($token = null)
+            {
+                if ($this->_string==null) {
+                    throw new Exception('Empty string');
                 }
-            }
 
-            if ($this->_token != $token) {
-                $this->_token=$token;
+                if ($this->_token==null) {
+                    if ($token==null) {
+                        throw new Exception('Empty token');
+                    }
+                }
+
+                if ($this->_token != $token) {
+                    $this->_token=$token;
                
-                 $this->_array=array();
+                     $this->_array=array();
 
-                 $looptok=strtok($this->_string, $this->_token);
+                     $looptok=strtok($this->_string, $this->_token);
 
-                while ($looptok !==false) {
-                    $this->_array[] = $looptok;
+                    while ($looptok !==false) {
+                        $this->_array[] = $looptok;
                       
-                    $looptok=strtok($this->_token);
+                        $looptok=strtok($this->_token);
+
+                    }
 
                 }
 
+                if ($this->_array==null) {
+                    throw new Exception('Empty array');
+                }
+
+                 $_position_in_string++;
+
+                if (($_position_in_string-1) > count($this->_array)) {
+                    return null;
+                }
+
+                   return $this->_array[$position_in_string-1];
+
             }
-
-            if ($this->_array==null) {
-                throw new Exception('Empty array');
-            }
-
-             $_position_in_string++;
-
-            if (($_position_in_string-1) > count($this->_array)) {
-                return null;
-            }
-
-               return $this->_array[$position_in_string-1];
-
-        }
 }

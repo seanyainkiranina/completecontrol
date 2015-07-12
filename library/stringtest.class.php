@@ -25,7 +25,7 @@ class StringTest extends PHPUnit_Framework_TestCase
 
          $this->assertEquals("Test2", $string->get());
 
-     }
+        }
 
         public function testConcat()
         {
@@ -130,12 +130,12 @@ class StringTest extends PHPUnit_Framework_TestCase
             $this->assertCount(13, $string->split());
         }
         public function testDynamic()
-	{
+        {
             $string = new String("Test14 Test14");
 
-	    $string->x=1;
+            $string->x=1;
 
-            $string->y=function($xxx){
+            $string->y=function ($xxx) {
 
                 $xx=$this->x + $xxx;
 
@@ -151,4 +151,3 @@ class StringTest extends PHPUnit_Framework_TestCase
 
         }
 }
-
