@@ -17,6 +17,7 @@ class Decimal extends stdClass
      private $_value = null;
      private $_objectid = '0715221d-59e8-9589-434093851da8';
      private $_mutable = false;
+     private $_decimalmode = false;
 
      /**
       * Function constructor
@@ -107,6 +108,36 @@ class Decimal extends stdClass
 
         }
      /**
+      * Function setReturnMode changes returns to decimal objects rather 
+      * then numeric 
+      *
+      * @param bool
+      *
+      * @return none
+      */
+        public function setReturnMode($mode)
+        {
+            if (!is_bool($mode))
+                       throw new Exception('Non boolean parameter');
+            $this->_decimalmode = $mode;
+        }
+     /**
+      * Function _return
+      *
+      * @param float
+      *
+      * @return mixed
+      */
+       private function _return($parameter)
+       { 
+           if ($this->_decimalmode == false)
+                       return $parameter;
+
+
+          return new Decimal($parameter);
+
+       }
+     /**
       * Function _toNumber
       *
       * @param mixed
@@ -151,7 +182,7 @@ class Decimal extends stdClass
                   $this->_value = $returnValue;
 
 
-            return $returnValue;
+            return $this->_return($returnValue);
              
 
 
@@ -182,7 +213,7 @@ class Decimal extends stdClass
              if ($this->_mutable==true) 
                   $this->_value = $returnValue;
 
-            return $returnValue;
+            return $this->_return($returnValue);
         }
 
 
@@ -213,7 +244,7 @@ class Decimal extends stdClass
                   $this->_value = $returnValue;
 
            
-            return $returnValue;
+            return $this->_return($returnValue);
 
         }
 
@@ -247,7 +278,7 @@ class Decimal extends stdClass
              if ($this->_mutable==true) 
                   $this->_value = $returnValue;
 
-            return $returnValue;
+            return $this->_return($returnValue);
 
         }
 
@@ -273,7 +304,7 @@ class Decimal extends stdClass
              if ($this->_mutable==true) 
                   $this->_value = $returnValue;
 
-            return $returnValue;
+            return $this->_return($returnValue);
 
         }
       /**
@@ -302,7 +333,7 @@ class Decimal extends stdClass
                  if ($this->_mutable==true)
                        $this->_value= $returnValue;
 
-              return $returnValue;
+            return $this->_return($returnValue);
 
         }
       /**
@@ -333,7 +364,7 @@ class Decimal extends stdClass
                  if ($this->_mutable==true)
                        $this->_value= $returnValue;
 
-                    return $returnValue;
+                 return $this->_return($returnValue);
 
            
         }

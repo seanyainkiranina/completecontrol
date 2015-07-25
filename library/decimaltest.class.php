@@ -101,6 +101,11 @@ class DecimalTest extends PHPUnit_Framework_TestCase
          $this->assertEquals( ($x/$y) ,  $decimal->divide($x,$y));
          $this->assertEquals( ($x*$y) ,  $decimal->multiply($x,$y));
 
+         $decimal->setReturnMode(true);
+
+         $this->assertEquals( (($x*$x)/$y) ,  
+                  $decimal->divide($decimal->multiply($x,$x),$y)->get());
+
 
       }
 
