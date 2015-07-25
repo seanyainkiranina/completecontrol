@@ -9,7 +9,8 @@
  * Feel free to edit as you please, and have fun.
  *
 */
-class String extends stdClass {
+class String extends stdClass
+{
     private $_string = null;
     private $_array = null;
     private $_token = null;
@@ -24,7 +25,8 @@ class String extends stdClass {
      *
      * @return instance
      */
-    public function __construct($string = null) {
+    public function __construct($string = null)
+    {
         $this->_string = $this->_toString($string);
     }
     /**
@@ -32,7 +34,8 @@ class String extends stdClass {
      *
      * @param bool
      */
-    public function setReturnMode($bool) {
+    public function setReturnMode($bool)
+    {
         $this->_stringmode = $bool;
     }
     /**
@@ -41,7 +44,8 @@ class String extends stdClass {
      * @return string
      *
      */
-    public function getObjectID() {
+    public function getObjectID()
+    {
         return $this->_objectid;
     }
     /**
@@ -52,7 +56,8 @@ class String extends stdClass {
      *
      * @return mixed
      */
-    public function __call($function, $params) {
+    public function __call($function, $params)
+    {
         $method = $this->$function->bindto($this);
         return call_user_func_array($method, $params);
     }
@@ -65,7 +70,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function get() {
+    public function get()
+    {
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -78,7 +84,8 @@ class String extends stdClass {
      *
      * @return none
      */
-    public function set($string) {
+    public function set($string)
+    {
         $this->_string = $this->_toString($string);
     }
     /**
@@ -89,7 +96,8 @@ class String extends stdClass {
      *
      * @return none
      */
-    public function setMutable($mutable) {
+    public function setMutable($mutable)
+    {
         $this->_mutable = $mutable;
     }
     /**
@@ -99,7 +107,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function concat($string) {
+    public function concat($string)
+    {
         $string = $this->_toString($string);
         if ($this->_string == null) {
             throw new Exception('Empty string');
@@ -120,7 +129,8 @@ class String extends stdClass {
      *
      * @return bool
      */
-    public function contains($searchString, $ignorecase = false) {
+    public function contains($searchString, $ignorecase = false)
+    {
         $searchString = $this->_toString($searchString);
         if ($this->_string == null) {
             throw new Exception('Empty string');
@@ -146,7 +156,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function uc() {
+    public function uc()
+    {
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -165,7 +176,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function strstr($needle, $before_needle = false) {
+    public function strstr($needle, $before_needle = false)
+    {
         $needle = $this->_toString($needle);
         if ($this->_string == null) {
             throw new Exception('Empty string');
@@ -184,7 +196,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function substr($start, $length = null) {
+    public function substr($start, $length = null)
+    {
         if ($length == null) {
             return $this->_return(substr($this->_string, $start));
         }
@@ -197,7 +210,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function shuffle() {
+    public function shuffle()
+    {
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -215,7 +229,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function reverse() {
+    public function reverse()
+    {
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -233,7 +248,8 @@ class String extends stdClass {
      *
      * @return string
      */
-    public function lc() {
+    public function lc()
+    {
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -253,7 +269,8 @@ class String extends stdClass {
      *
      * @return
      */
-    public function replace($search, $replace, $count = null, $ignore_case = false) {
+    public function replace($search, $replace, $count = null, $ignore_case = false)
+    {
         $search = $this->_toString($search);
         $replace = $this->_toString($replace);
         if ($this->_string == null) {
@@ -295,7 +312,8 @@ class String extends stdClass {
      * @param string
      * @return int
      */
-    public function similar($string) {
+    public function similar($string)
+    {
         $string = $this->_toString($string);
         return $this->_return(similar_text($this->get(), $string));
     }
@@ -306,7 +324,8 @@ class String extends stdClass {
      * @param string
      * @return bool
      */
-    public function compare($string) {
+    public function compare($string)
+    {
         $string = $this->_toString($string);
         if ($this->_string == $string) {
             return true;
@@ -320,13 +339,15 @@ class String extends stdClass {
      * @param none
      * @return int
      */
-    public function toInteger() {
+    public function toInteger()
+    {
         return intval($this->_string);
     }
     /**
      *  Function length Wrapper for strlen
      */
-    public function length() {
+    public function length()
+    {
         return strlen($this->_string);
     }
     /**
@@ -336,7 +357,8 @@ class String extends stdClass {
      * @param nothing
      * @return int
      */
-    public function wordCount() {
+    public function wordCount()
+    {
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -346,7 +368,8 @@ class String extends stdClass {
      *  Wrapper for addcslashes and addslashes
      *  Quote string with slashes.
      */
-    public function quote($charlist = null) {
+    public function quote($charlist = null)
+    {
         $charlist = $this->_toString($charlist);
         if ($this->_string == null) {
             throw new Exception('Empty string');
@@ -360,7 +383,8 @@ class String extends stdClass {
      *  Wrapper for rtrim or ltrim
      *
      */
-    public function trim($character_mask = null, $left = false) {
+    public function trim($character_mask = null, $left = false)
+    {
         $character_mask = $this->_toString($character_mask);
         if ($left == false) {
             if ($character_mask == null) {
@@ -383,7 +407,8 @@ class String extends stdClass {
      *  Wrapper for str_split, explode, and split.
      *
      */
-    public function split($delimiter = null, $limit = null) {
+    public function split($delimiter = null, $limit = null)
+    {
         $delimiter = $this->_toString($delimiter);
         if ($this->_string == null) {
             throw new Exception('Empty string');
@@ -414,7 +439,8 @@ class String extends stdClass {
      * @param mixed
      * @return string
      */
-    private function _toString($string) {
+    private function _toString($string)
+    {
         if ($string == null) {
             return null;
         }
@@ -436,7 +462,8 @@ class String extends stdClass {
      * @param string
      * @return mixed
      */
-    private function _return($string) {
+    private function _return($string)
+    {
         if ($this->_stringmode == false) {
             return $string;
         }
@@ -446,7 +473,8 @@ class String extends stdClass {
      * Wrapper for strtok
      *
      */
-    public function token($token = null) {
+    public function token($token = null)
+    {
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }

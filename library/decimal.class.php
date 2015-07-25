@@ -9,7 +9,8 @@
  * Feel free to edit as you please, and have fun.
  *
 */
-class Decimal extends stdClass {
+class Decimal extends stdClass
+{
     private $_value = null;
     private $_objectid = '0715221d-59e8-9589-434093851da8';
     private $_mutable = false;
@@ -22,7 +23,8 @@ class Decimal extends stdClass {
      *
      * @return instance
      */
-    public function __construct($param = null) {
+    public function __construct($param = null)
+    {
         $this->_value = $param;
     }
     /**
@@ -31,7 +33,8 @@ class Decimal extends stdClass {
      * @return string
      *
      */
-    public function getObjectID() {
+    public function getObjectID()
+    {
         return $this->_objectid;
     }
     /**
@@ -41,7 +44,8 @@ class Decimal extends stdClass {
      *
      * @return mixed
      */
-    public function __call($function, $params) {
+    public function __call($function, $params)
+    {
         $method = $this->$function->bindto($this);
         return call_user_func_array($method, $params);
     }
@@ -54,7 +58,8 @@ class Decimal extends stdClass {
      *
      * @param null
      */
-    public function get() {
+    public function get()
+    {
         return $this->_value;
     }
     /**
@@ -65,7 +70,8 @@ class Decimal extends stdClass {
      *
      * @return none
      */
-    public function set($parameter) {
+    public function set($parameter)
+    {
         $this->_value = $this->_toNumber($parameter);
     }
     /**
@@ -77,7 +83,8 @@ class Decimal extends stdClass {
      *
      * @return none
      */
-    public function setMutable($mutable) {
+    public function setMutable($mutable)
+    {
         if (!is_bool($mutable)) {
             throw new Exception('Non boolean parameter');
         }
@@ -91,7 +98,8 @@ class Decimal extends stdClass {
      *
      * @return none
      */
-    public function setReturnMode($mode) {
+    public function setReturnMode($mode)
+    {
         if (!is_bool($mode)) {
             throw new Exception('Non boolean parameter');
         }
@@ -104,7 +112,8 @@ class Decimal extends stdClass {
      *
      * @return mixed
      */
-    private function _return($parameter) {
+    private function _return($parameter)
+    {
         if ($this->_decimalmode == false) {
             return $parameter;
         }
@@ -117,7 +126,8 @@ class Decimal extends stdClass {
      *
      * @return float
      */
-    private function _toNumber($parameter) {
+    private function _toNumber($parameter)
+    {
         if (is_numeric($parameter)) {
             return $parameter;
         }
@@ -137,7 +147,8 @@ class Decimal extends stdClass {
      *
      * @return float
      */
-    public function add(...$parameters) {
+    public function add(...$parameters)
+    {
         $returnValue = 0;
         if ($this->_value != null) {
             $returnValue = $this->_value;
@@ -158,7 +169,8 @@ class Decimal extends stdClass {
      *
      * @return float
      */
-    public function subtract(...$parameters) {
+    public function subtract(...$parameters)
+    {
         $returnValue = 0;
         if ($this->_value != null) {
             $returnValue = $this->_value;
@@ -181,7 +193,8 @@ class Decimal extends stdClass {
      *
      * @return float
      */
-    public function multiply(...$parameters) {
+    public function multiply(...$parameters)
+    {
         $returnValue = 0;
         if ($this->_value != null) {
             $returnValue = $this->_value;
@@ -204,7 +217,8 @@ class Decimal extends stdClass {
      *
      * @return float
      */
-    public function divide(...$parameters) {
+    public function divide(...$parameters)
+    {
         if (count($parameters) == 0) {
             throw new Exception("Invalid parameters");
         }
@@ -229,7 +243,8 @@ class Decimal extends stdClass {
      *
      * @return float
      */
-    public function power($parameter) {
+    public function power($parameter)
+    {
         if ($this->_value == null) {
             throw new Exception("Invalid base");
         }
@@ -248,7 +263,8 @@ class Decimal extends stdClass {
      *
      * @param integer
      */
-    public function abs($parameter = null) {
+    public function abs($parameter = null)
+    {
         if ($parameter == null) {
             if ($this->_value == null) {
                 throw new Exception("Parameter missing");
@@ -274,7 +290,8 @@ class Decimal extends stdClass {
      * @param integer
      * @param mixed
      */
-    public function round($precision = 0, $parameter = null) {
+    public function round($precision = 0, $parameter = null)
+    {
         if ($parameter == null) {
             if ($this->_value == null) {
                 throw new Exception("Parameter missing");
