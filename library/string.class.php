@@ -631,7 +631,7 @@ class String extends stdClass
             private function _return($string)
             {
 
-                if ($_stringmode == false) {
+                if ($this->_stringmode == false) {
                     return $string;
                 }
 
