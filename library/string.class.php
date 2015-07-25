@@ -31,7 +31,7 @@ class String extends stdClass
      public function __construct($string = null)
      {
             $this->_string=$this->_toString($string);
-        }
+     }
 
      
      /**
@@ -43,7 +43,7 @@ class String extends stdClass
         public function getObjectID()
         {
 
-            return $_objectid;
+            return $this->_objectid;
 
         }
 
@@ -339,7 +339,7 @@ class String extends stdClass
 
          if ($this->_string==null) {
                throw new Exception('Empty string');
-            }
+         }
 
 
             if ($count==null) {
@@ -597,7 +597,7 @@ class String extends stdClass
 
             throw new Exception('String Parameter Error');
 
-         }
+            }
 
     /**
     * Wrapper for strtok

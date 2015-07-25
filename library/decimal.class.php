@@ -14,22 +14,21 @@
 class Decimal extends stdClass
 {
 
-     private $_integer = 0;
-     private $_remainder = 0.0;
-     private $_mutable = false;
+     private $_value = null;
      private $_objectid = '0715221d-59e8-9589-434093851da8';
+     private $_mutable = false;
 
      /**
       * Function constructor
       *
-      * @return instance
       *
       * @param mixed
+      *
+      * @return instance
       */
         public function __construct($param = null)
         {
-          list($this->_integer,$this->_remainder)=
-               $this->_splitByDecimal($param);
+              $this->_value=$param;
         }
      
      /**
@@ -41,16 +40,16 @@ class Decimal extends stdClass
         public function getObjectID()
         {
 
-            return $_objectid;
+            return $this->_objectid;
 
         }
 
      /**
       * Function overload to create dyanmic function
       *
-      * @return mixed
-      *
       * @param array
+      *
+      * @return mixed
       */
         public function __call($function, $params)
         {
@@ -72,288 +71,272 @@ class Decimal extends stdClass
         public function get()
         {
 
-            return array($this->_integer,$this->_remainder);
+            return $this->_value;
 
         }
-     /**
-      * Function get-remainder
-      *
-      * @return mixed
-      *
-      * @param  none
-      */
-        public function get_remainder()
-        {
-
-            return $this->_remainder;
-
-        }
-
      /**
       * Function set sets the internal gmp.
       *
-      * @return none
       *
-      * @paramter mixed
+      * @param mixed
+      *
+      * @return none
       */
         public function set($parameter)
         {
-            list($this->_integer,$this->_remainder)=$this->_splitByDecimal($parameter);
+            $this->_value=$this-> _toNumber($parameter);
 
         }
+
 
      /**
       * Function setMutable sets changablity of the internal string.
       * Setting to true causes each function to call its internal string
       *
-      * @return none
       *
       * @param bool
+      *
+      * @return none
       */
         public function setMutable($mutable)
         {
+            if (!is_bool($mutable))
+                       throw new Exception('Non boolean parameter');
 
             $this->_mutable=$mutable;
 
         }
+     /**
+      * Function _toNumber
+      *
+      * @param mixed
+      *
+      * @return float
+      */
+       private function _toNumber($parameter)
+       {
+           if (is_numeric($parameter))
+                     return $parameter;
+
+
+           if (is_object($parameter))
+                if (method_exists($parameter, "getObjectID")) 
+                    if ($this->_objectid == $parameter->getObjectID()) 
+                                 return $parameter->get();
+
+            throw new Exception('Invalid Parameter');
+
+       }
 
      /**
       * Function add
       *
-      * @return mixed
+      * @param mixed
       *
-      * @parameter
+      * @return float
       */
-        public function add($parameter)
+        public function add(...$parameters)
         {
-            list($gmp,$remainder)=$this->_splitByDecimal($parameter);
 
-            $value =gmp_add($this->_integer, $gmp);
+              $returnValue=0;
 
-            $remain = $this->_remainder + $remainder;
+              if ($this->_value !=null)
+                   $returnValue = $this->_value;
 
-            $remain_round = intval($this->_remainder);
+              foreach ($parameters as $parameter)
+                       $returnValue = $returnValue 
+                       + $this->_toNumber($parameter);
 
-            $remain = $remain - $remain_round;
-         
-            $remain_round = gmp_init($remain_round);
-
-            $value = gmp_add($value, $remain_round);
-        
-            if ($this->_mutable==true) {
-                $this->_integer = $value;
-                $this->_remainder = $remain;
-            }
+             if ($this->_mutable==true) 
+                  $this->_value = $returnValue;
 
 
-            return $this->toFloat($value, $remain);
+            return $returnValue;
+             
+
 
         }
 
      /**
-      * Function substract
+      * Function subtract
       *
-      * @return mixed
       *
-      * @parameter mixed
+      * @param mixed
+      *
+      * @return float
       */
-        public function subtract($parameter)
+        public function subtract(...$parameters)
         {
-            list($gmp,$remainder)=$this->_splitByDecimal($parameter);
+              $returnValue=0;
 
-            $value =gmp_sub($this->_integer, $gmp);
-            $remain = $this->_remainder - $remainder;
+              if ($this->_value !=null)
+                   $returnValue = $this->_value;
+              else
+                    $returnValue = 
+                        $this->_toNumber(array_shift($parameters));
 
-            if ($remain<0) {
-                 $value =gmp_sub($this->_integer, gmp_init(1));
-                 $remain = 1 + $remain;
-            }
+              foreach ($parameters as $parameter)
+                       $returnValue = 
+                       $returnValue - $this->_toNumber($parameter);
 
-            if ($this->_mutable==true) {
-                $this->_integer = $value;
-                $this->_remainder = $remain;
-            }
+             if ($this->_mutable==true) 
+                  $this->_value = $returnValue;
 
-            return $this->toFloat($value, $remain);
+            return $returnValue;
         }
 
 
      /**
       * Function multiply
       *
-      * @return
       *
-      * @param mixed | integer 
+      * @param mixed  
+      *
+      * @return float
       */
-        public function multiply($parameter)
+        public function multiply(...$parameters)
         {
+              $returnValue=0;
+
+              if ($this->_value !=null)
+                   $returnValue = $this->_value;
+              else
+                    $returnValue = 
+                        $this->_toNumber(array_shift($parameters));
 
 
+              foreach ($parameters as $parameter)
+                       $returnValue = $returnValue 
+                       * $this->_toNumber($parameter);
 
+             if ($this->_mutable==true) 
+                  $this->_value = $returnValue;
 
            
+            return $returnValue;
 
         }
 
      /**
-      * Function
+      * Function  for divison 
       *
-      * @return
-      *
-      * @param
-      */
-        public function divide($param)
-        {
-
-
-        }
-
-     /**
-      * Function
-      *
-      * @return
-      *
-      * @param integer
-      */
-        public function power($param)
-        {
-
-        }
-
-     /**
-      * Function toInteger wrapper for intval
-      *
-      * @return int
-      *
-      * @param none
-      */
-        public function toInteger()
-        {
-
-            $internal_int=gmp_intval($this->_integer);
-
-            $check_string=(string)$internal_int;
-
-            $check_integer=gmp_strval($this->_integer);
-
-            if ($check_integer != $check_string) {
-                throw new Exception('Decimal Can not be returned as int');
-            }
-                
-
-            return $internal_int;
-
-        }
-
-     /**
-      * Function
-      *
-      * @return
-      *
-      * @param integer remainder
-      *
-      */
-        public function toFloat($integer =null, $remainder=null)
-        {
-
-           if ($integer==null)
-              if ($remainder==null)
-                  {
-                      $return_value=gmp_strval($this->_integer);
-                      $return_value_remainder=ltrim((string)$this->_remainder,'0');
-                      $return_value .=$return_value_remainder;
-
-                      
-                      return $return_value;
-
-                  }
-
-            $return_value=gmp_strval($integer);
-            $return_value_remainder=ltrim((string)$remainder,'0');
-            $return_value .=(string)$return_value_remainder;
-             
-            $flt=(double)$return_value;
-
-            $flt_str=(string)$flt;
-
-            if ($flt_str==$return_value) {
-                return $flt;
-
-            }
-
-            return $return_value;
-
-        }
-
-     /**
-      * Function  _splitByDecimal splits string by decimal point into two tuples
-      *
-      * @return array
       *
       * @param mixed
+      *
+      * @return float
       */
-         private function _splitByDecimal($parameter)
-         {
-            if (is_object($parameter)) {
-                if (method_exists($parameter, "getObjectID")) {
-                    if ($this->_objectid == $parameter->getObjectID()) {
-                               return $parameter->get();
-                    }
-                }
-            }
+        public function divide(...$parameters)
+        {
 
-            if (is_object($parameter)) {
-                throw new Exception('Decimal Parameter Error');
-            }
+              if (count($parameters)==0)
+                   throw new Exception("Invalid parameters");
+
+              $returnValue=0;
+
+              if ($this->_value !=null)
+                   $returnValue = $this->_value;
+              else
+                    $returnValue = 
+                        $this->_toNumber(array_shift($parameters));
 
 
-            if ($parameter == null) {
-                 return array(null,null);
-            }
+              foreach ($parameters as $parameter)
+                       $returnValue = $returnValue 
+                       / $this->_toNumber($parameter);
 
-            $str_version=(string)$parameter;
+             if ($this->_mutable==true) 
+                  $this->_value = $returnValue;
 
-            $tuples=explode(".", $str_version);
+            return $returnValue;
 
-            $integer=$tuples[0];
+        }
 
-            $remainder=.0;
-
-            if (isset($tuples[1])) {
-                $remainder=(double) ("." . $tuples[1]);
-            }
-
-            return array($integer,$remainder);
-
-         }
-        
      /**
-      * Function  _toDecimal polymorphic
+      * Function raise to the power of parameter
       *
-      * @return string
+      * @param mixed
       *
-      * @param Decimal object | string | integer | null
+      * @return float
       */
-            private function _toDecimal($parameter)
-            {
+        public function power($parameter)
+        {
 
-                if (is_string($parameter)) {
-                    if (!is_numeric($parameter)) {
-                        throw new Exception('Decimal Parameter Error');
+              if ($this->_value==null)
+                   throw new Exception("Invalid base");
+
+              if ($parameter==null)
+                   throw new Exception("Invalid exponential");
+             
+                   $returnValue = pow($this->_value,
+                                      $this->_toNumber($parameter));
+
+             if ($this->_mutable==true) 
+                  $this->_value = $returnValue;
+
+            return $returnValue;
+
+        }
+      /**
+       * Function returns absolute value of parameter of if null sets interal
+       * variable to its absolute value.
+       *
+       * @param integer
+       */
+        public function abs($parameter =null)
+        {
+              if ($parameter==null)
+                 if ($this->_value==null)
+                   throw new Exception("Parameter missing");
+
+              if ($parameter==null)
+                 if ($this->_mutable==true){
+                           $this->_value = abs($this->_value);
+                           return $this->_value;
+                     }
+                    else{
+                           return abs($this->_value);
                     }
-                    return gmp_init($parameter);
-                }
 
-                if (is_int($parameter)) {
-                    return gmp_init($parameter);
-                }
+                $returnValue = abs($this->_toNumber($parameter));
+                    
+                 if ($this->_mutable==true)
+                       $this->_value= $returnValue;
 
-                if (is_numeric($paramter)) {
-                    return gmp_init($parameter);
-                }
+              return $returnValue;
 
-                throw new Exception('Decimal Parameter Error');
+        }
+      /**
+       * Function round 
+       *
+       * @param integer
+       * @param mixed
+       */
+        public function round($precision=0,$parameter=null)
+        {
+              if ($parameter==null)
+                if ($this->_value==null)
+                   throw new Exception("Parameter missing");
 
-            }
+
+              if ($parameter==null)
+                 if ($this->_mutable==true){
+                           $this->_value = round($this->_value,$precision);
+                           return $this->_value;
+                    }
+                    else{
+                           return round($this->_value,$precision);
+
+                    }
+
+                $returnValue = round($this->_toNumber($parameter),$precision);
+
+                 if ($this->_mutable==true)
+                       $this->_value= $returnValue;
+
+                    return $returnValue;
+
+           
+        }
+
 
 }

@@ -25,7 +25,13 @@ class StringTest extends PHPUnit_Framework_TestCase
 
          $this->assertEquals("Test2", $string->get());
 
-        }
+         $string2 = new String("Test");
+
+         $string2->set($string);
+
+         $this->assertEquals("Test2", $string2->get());
+
+     }
 
         public function testConcat()
         {
