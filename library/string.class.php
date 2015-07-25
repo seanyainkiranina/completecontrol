@@ -20,19 +20,32 @@ class String extends stdClass
      private $_position_in_string = 0;
      private $_mutable = false;
      private $_objectid = '0715221c-59e8-9589-434093851da8';
+     private $_stringmode = false;
 
      /**
       * Function constructor
       *
-      * @return instance
-      *
       * @param string
+      *
+      * @return instance
       */
      public function __construct($string = null)
      {
             $this->_string=$this->_toString($string);
-     }
+        }
 
+     /**
+      * Function set return mode
+      *
+      * @param bool
+      */
+        public function setReturnMode($bool)
+        {
+
+            $this->_stringmode = $bool;
+
+        }
+       
      
      /**
       * Function getObjectID unique id to this class.
@@ -339,7 +352,7 @@ class String extends stdClass
 
          if ($this->_string==null) {
                throw new Exception('Empty string');
-         }
+            }
 
 
             if ($count==null) {
@@ -597,7 +610,7 @@ class String extends stdClass
 
             throw new Exception('String Parameter Error');
 
-            }
+         }
 
     /**
     * Wrapper for strtok
