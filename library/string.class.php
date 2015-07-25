@@ -32,7 +32,7 @@ class String extends stdClass
      public function __construct($string = null)
      {
             $this->_string=$this->_toString($string);
-        }
+     }
 
      /**
       * Function set return mode
@@ -63,9 +63,10 @@ class String extends stdClass
      /**
       * Function overload to create dyanmic function
       *
-      * @return mixed
       *
       * @param array
+      *
+      * @return mixed
       */
         public function __call($function, $params)
         {
@@ -78,11 +79,11 @@ class String extends stdClass
      /**
       * Function get
       *
-      * @return string
+      * @param null
       *
       * @throw 'Empty string'
       *
-      * @param null
+      * @return string
       */
         public function get()
         {
@@ -91,15 +92,15 @@ class String extends stdClass
                  throw new Exception('Empty string');
             }
 
-            return $this->_string;
+            return $this->_return($this->_string);
 
         }
      /**
       * Function set sets the internal string.
       *
-      * @return none
-      *
       * @param string
+      *
+      * @return none
       */
         public function set($string)
         {
@@ -110,9 +111,9 @@ class String extends stdClass
       * Function setMutable sets changablity of the internal string.
       * Setting to true causes each function to call its internal string
       *
-      * @return none
-      *
       * @param bool
+      *
+      * @return none
       */
         public function setMutable($mutable)
         {
@@ -124,9 +125,9 @@ class String extends stdClass
      /**
       * Function concat joins string passed to internal string
       *
-      * @return string
-      *
       * @param string
+      *
+      * @return string
       */
         public function concat($string)
         {
@@ -143,18 +144,18 @@ class String extends stdClass
                 $this->_string=$returnString;
             }
         
-            return $returnString;
+            return $this->_return($returnString);
 
         }
 
      /**
       * Function string contains substring
       *
-      * @return bool
       *
       * @param string
       * @param bool case insensitive
       *
+      * @return bool
       */
         public function contains($searchString, $ignorecase = false)
         {
@@ -189,9 +190,9 @@ class String extends stdClass
      /**
       * Function uc upper case version of string
       *
-      * @return string
-      *
       * @param none
+      *
+      * @return string
       */
         public function uc()
         {
@@ -204,7 +205,7 @@ class String extends stdClass
                 $this->_string=$uppercase;
             }
 
-            return $uppercase;
+            return $this->_return($uppercase);
 
 
         }
@@ -212,10 +213,11 @@ class String extends stdClass
      /**
       * Function strstr wrapper for strstr
       *
-      * @return string
       *
       * @param string
       * @param bool
+      *
+      * @return string
       */
         public function strstr($needle, $before_needle = false)
         {
@@ -226,42 +228,47 @@ class String extends stdClass
             }
 
             if ($before_needle==false) {
-                return strstr($this->_string, $needle);
+                return $this->_return(strstr($this->_string, $needle));
 
             }
 
 
-            return strstr($this->_string, $needle, $before_needle);
+            return $this->_return(strstr(
+                $this->_string,
+                $needle,
+                $before_needle
+            ));
 
         }
    
      /**
       * Function substr
       *
-      * @param string
       *
-      * @return start
-      * @return length (optional)
+      * @param start
+      * @param length (optional)
+      *
+      * @return string
       */
         public function substr($start, $length = null)
         {
 
             if ($length==null) {
-                return substr($this->_string, $start);
+                return $this->_return(substr($this->_string, $start));
   
 
 
             }
-              return substr($this->_string, $start, $length);
+              return $this->_return(substr($this->_string, $start, $length));
 
         }
 
      /**
       * Function shuffle wrapper for str_shuffle
       *
-      * @return string
-      *
       * @param nothing
+      *
+      * @return string
       */
         public function shuffle()
         {
@@ -275,7 +282,7 @@ class String extends stdClass
                  $this->_string=$returnString;
             }
 
-            return $returnString;
+            return $this->_return($returnString);
 
 
         }
@@ -283,9 +290,10 @@ class String extends stdClass
      /**
       * Function reverse wrapper for strrev
       *
-      * @return string
       *
       * @param nothing
+      *
+      * @return string
       */
         public function reverse()
         {
@@ -299,7 +307,7 @@ class String extends stdClass
             }
 
 
-            return $returnString;
+            return $this->_return($returnString);
 
         }
 
@@ -307,9 +315,10 @@ class String extends stdClass
      /**
       * Function lc wrapper for strolower
       *
-      * @return string
       *
       * @param nothing
+      *
+      * @return string
       */
 
         public function lc()
@@ -323,7 +332,7 @@ class String extends stdClass
                  $this->_string=$returnString;
             }
 
-             return $returnString;
+             return $this->_return($returnString);
      
         }
 
@@ -331,12 +340,12 @@ class String extends stdClass
      /**
       * Function replace wrapper for str_replace
       *
-      * @return
-      *
       * @param string
       * @param string
       * @param int
       * @param bool
+      *
+      * @return
       */
         public function replace(
             $search,
@@ -362,7 +371,7 @@ class String extends stdClass
                          $this->_string=$returnString;
                     }
 
-                    return $returnString;
+                    return $this->_return($returnString);
 
                 }
             } else {
@@ -371,7 +380,7 @@ class String extends stdClass
                     $this->_string=$returnString;
                 }
 
-                       return $returnString;
+                       return $this->_return($returnString);
 
  
             }
@@ -382,14 +391,15 @@ class String extends stdClass
                       $this->_string=$returnString;
                 }
 
-                return $returnString;
+                return $this->_return($returnString);
             } else {
                 $returnString= str_replace($search, $replace, $this->_string, $count);
                 if ($this->_mutable==true) {
                       $this->_string=$returnString;
                 }
 
-                return $returnString;
+                
+                return $this->_return($returnString);
 
             }
 
@@ -400,25 +410,25 @@ class String extends stdClass
      /**
       * Function similar wrapper for similar_text
       *
-      * @return int
       *
       * @param string
+      * @return int
       */
 
         public function similar($string)
         {
             $string=$this->_toString($string);
 
-            return similar_text($this->get(), $string);
+            return $this->_return(similar_text($this->get(), $string));
 
         }
 
      /**
       * Function compares string wrapper for ==
       *
-      * @return bool
       *
       * @param string
+      * @return bool
       */
         public function compare($string)
         {
@@ -438,9 +448,9 @@ class String extends stdClass
      /**
       * Function toInteger wrapper for intval
       *
-      * @return int
       *
       * @param none
+      * @return int
       */
     
         public function toInteger()
@@ -463,9 +473,9 @@ class String extends stdClass
      /**
       * Function wordCount wrapper for str_word_count
       *
-      * @return int
       *
       * @param nothing
+      * @return int
       */
 
         public function wordCount()
@@ -494,11 +504,11 @@ class String extends stdClass
             }
 
             if ($cslashes !=null) {
-                 return addcslashes($this->_string, $charlist);
+                 return $this->_return(addcslashes($this->_string, $charlist));
 
 
             }
-                  return addslashes($this->_string);
+                  return $this->_return(addslashes($this->_string));
 
 
         }
@@ -514,24 +524,24 @@ class String extends stdClass
             if ($left==false) {
                 if ($character_mask==null) {
                       $returnString= rtrim($this->_string);
-                      return $returnString;
+                      return $this->_return($returnString);
 
                 }
             } else {
-                $returnString= rtrim($this->_string, $character_mask);
-                return $returnString;
+                      $returnString= rtrim($this->_string, $character_mask);
+                      return $this->_return($returnString);
 
             }
 
             if ($character_mask==null) {
-                  $returnString= ltrim($this->_string);
+                      $returnString= ltrim($this->_string);
 
-                  return $returnString;
+                      return $this->_return($returnString);
 
             } else {
-                $returnString=ltrim($this->_string, $character_mask);
+                      $returnString=ltrim($this->_string, $character_mask);
+                      return $this->_return($returnString);
 
-                return $returnString;
 
             }
 
@@ -585,9 +595,9 @@ class String extends stdClass
      /**
       * Function  _toString polymorphic
       *
-      * @return string
       *
-      * @param String object | string | null
+      * @param mixed
+      * @return string
       */
          private function _toString($string)
          {
@@ -611,6 +621,28 @@ class String extends stdClass
             throw new Exception('String Parameter Error');
 
          }
+    /**
+    * Return
+    *
+    * @param string
+    * @return mixed
+    */
+
+            private function _return($string)
+            {
+
+                if ($_stringmode == false) {
+                    return $string;
+                }
+
+             
+                  return new String($string);
+
+
+            }
+
+
+
 
     /**
     * Wrapper for strtok
@@ -630,10 +662,10 @@ class String extends stdClass
 
                 if ($this->_token != $token) {
                     $this->_token=$token;
-               
-                     $this->_array=array();
+             
+                    $this->_array=array();
 
-                     $looptok=strtok($this->_string, $this->_token);
+                    $looptok=strtok($this->_string, $this->_token);
 
                     while ($looptok !==false) {
                         $this->_array[] = $looptok;
@@ -648,13 +680,13 @@ class String extends stdClass
                     throw new Exception('Empty array');
                 }
 
-                 $_position_in_string++;
+                $_position_in_string++;
 
                 if (($_position_in_string-1) > count($this->_array)) {
                     return null;
                 }
 
-                   return $this->_array[$position_in_string-1];
+                   return $this->_return($this->_array[$position_in_string-1]);
 
             }
 }
