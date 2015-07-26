@@ -74,7 +74,7 @@ class File extends stdClass
     /**
      * Function get
      *
-     * @return gmp
+     * @return string
      *
      * @throw 'Empty string'
      *
@@ -85,7 +85,7 @@ class File extends stdClass
         return $this->_value;
     }
     /**
-     * Function set sets the internal gmp.
+     * Function set sets the internal string.
      *
      *
      * @param mixed
@@ -129,55 +129,61 @@ class File extends stdClass
         $this->_filemode = $mode;
     }
     /**
-     * Function group returns file group owner as string or null 
-     * 
+     * Function group returns file group owner as string or null
+     *
      * @return mixed
      */
     public function group()
     {
-        if ($this->_exists==false)
+        if ($this->_exists==false) {
              return null;
+        }
 
         $groupid= filegroup($this->_value);
 
-       if ($groupid === false)
-          return null;
+        if ($groupid === false) {
+            return null;
+        }
 
         $group=posix_getgrgid($groupid);
 
-        if (!is_array($group))
+        if (!is_array($group)) {
              return null;
+        }
 
-       return $group['name'];
+        return $group['name'];
 
     }
     /**
-     * Function owner returns file owner as string or null 
-     * 
+     * Function owner returns file owner as string or null
+     *
      * @return mixed
      */
     public function owner()
     {
-        if ($this->_exists==false)
+        if ($this->_exists==false) {
              return null;
+        }
 
         $userid= fileowner($this->_value);
 
-       if ($userid === false)
-          return null;
+        if ($userid === false) {
+            return null;
+        }
 
         $user=posix_getpwuid($userid);
 
-        if (!is_array($user))
+        if (!is_array($user)) {
              return null;
+        }
 
-       return $user['name'];
+        return $user['name'];
 
     }
     /**
      * Function _init set all internal properties
      *
-     * @param string 
+     * @param string
      *
      *
      */
@@ -188,8 +194,7 @@ class File extends stdClass
         $this->_basename = basename($parameter);
         $this->_dirname = dirname($parameter);
 
-        if ($this->_exists==true){
-
+        if ($this->_exists==true) {
             $this->_isDir = is_dir($parameter);
             $this->_isExecutable = is_executable($parameter);
             $this->_isFile = is_file($parameter);
@@ -206,7 +211,7 @@ class File extends stdClass
             $this->_type = filetype($parameter);
             $this->_owner = fileowner($parameter);
 
-           return;
+            return;
 
         }
             $this->_isDir = false;
