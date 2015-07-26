@@ -52,7 +52,7 @@ class Decimal extends stdClass
     /**
      * Function get
      *
-     * @return gmp
+     * @return numeric
      *
      * @throw 'Empty string'
      *
@@ -63,7 +63,7 @@ class Decimal extends stdClass
         return $this->_value;
     }
     /**
-     * Function set sets the internal gmp.
+     * Function set sets the internal numeric
      *
      *
      * @param mixed
