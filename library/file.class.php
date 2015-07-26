@@ -130,10 +130,13 @@ class File extends stdClass
     }
     /**
      * Function group returns file group owner as string or null
+     * on failure
+     *
+     * @param mixed
      *
      * @return mixed
      */
-    public function group()
+    public function group($newgroup=null)
     {
         if ($this->_exists==false) {
              return null;
@@ -150,8 +153,18 @@ class File extends stdClass
         if (!is_array($group)) {
              return null;
         }
+        if ($newgroup==null)
+            return $group['name'];
 
-        return $group['name'];
+       if ($this->_isWriteable == false)
+             return null;
+
+      chgrp($this->_value,$newgroup);
+
+      return $this->group();
+
+
+       
 
     }
     /**
