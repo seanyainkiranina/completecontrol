@@ -129,70 +129,127 @@ class File extends stdClass
         $this->_filemode = $mode;
     }
     /**
+     * Function copy 
+     *
+     * @param string
+     * 
+     * @return mixed
+     */
+
+    /**
      * Function group returns file group owner as string or null
      * on failure
      *
      * @param mixed
+     * @throws mixed
      *
-     * @return mixed
+     * @return string
      */
     public function group($newgroup=null)
     {
-        if ($this->_exists==false) {
-             return null;
-        }
+        if ($this->_exists==false) 
+            throw new Exception("File does not exist");
+        
+        if ($this->_isReadable==false)
+            throw new Exception("File is not readable");
 
         $groupid= filegroup($this->_value);
 
-        if ($groupid === false) {
-            return null;
-        }
+        if ($groupid === false) 
+            throw new Exception("Error getting group id");
 
         $group=posix_getgrgid($groupid);
 
-        if (!is_array($group)) {
-             return null;
-        }
+        if (!is_array($group)) 
+            throw new Exception("Error getting group id");
+
         if ($newgroup==null)
             return $group['name'];
 
        if ($this->_isWriteable == false)
-             return null;
+            throw new Exception("File is not writeable");
 
-      chgrp($this->_value,$newgroup);
+       if (chgrp($this->_value,$newgroup)===false)
+            throw new Exception("Unable to change File group");
+
+      clearstatcache();
 
       return $this->group();
-
-
-       
 
     }
     /**
      * Function owner returns file owner as string or null
      *
-     * @return mixed
+     * @throws mixed
+     *
+     * @return string
      */
-    public function owner()
+    public function owner($newowner = null)
     {
-        if ($this->_exists==false) {
-             return null;
-        }
+        if ($this->_exists==false) 
+            throw new Exception("File does not exist");
+        
+        if ($this->_isReadable==false)
+            throw new Exception("File is not readable");
 
         $userid= fileowner($this->_value);
 
-        if ($userid === false) {
-            return null;
-        }
+        if ($userid === false) 
+            throw new Exception("Could not get file owner");
 
         $user=posix_getpwuid($userid);
 
-        if (!is_array($user)) {
-             return null;
-        }
+        if (!is_array($user)) 
+            throw new Exception("Could not get file owner");
 
-        return $user['name'];
+        if ($newowner == null)
+             return $user['name'];
+
+        if ($this->_isWriteable == false)
+            throw new Exception("File is not writeable");
+
+        if (chown($this->_value,$newowner)===false)
+            throw new Exception("Could not set file owner");
+
+        clearstatcache();
+
+       return $this->owner();
+    }
+    /**
+     * Function chmod
+     *
+     * @param int
+     *
+     */
+    public function chmod($mode)
+    {
+
+        $mode=intval($mode);
+
+        if ($this->_exists==false) 
+            throw new Exception("File does not exist");
+
+        if ($this->_isWriteable == false)
+            throw new Exception("File is not writeable");
+
+       $valid_mode=false;
+
+       if ($mode>777)
+          throw new Exception("Bad file mode");
+
+       if ($mode<0)
+          throw new Exception("Bad file mode");
+
+      $characters=str_split($mode);
+
+     foreach($characters as $character)
+        if (intval($character)>7)
+          throw new Exception("Bad file mode");
+
+    return chmod($this->_value,$mode);
 
     }
+
     /**
      * Function _init set all internal properties
      *
