@@ -43,7 +43,7 @@ class File extends stdClass
      *
      * @return instance
      */
-    public function __construct($param = null)
+    public function __construct($parameter = null)
     {
         $this->_value = $this->_toFile($parameter);
         $this->_init();
@@ -371,7 +371,7 @@ class File extends stdClass
      */
     public function append($text)
     {
-        $fp = fopen($this->_value, "r+");
+        $fp = fopen($this->_value, "a+");
 
         if (flock($fp, LOCK_EX)===false) {
             throw new Exception("Unable to lock file");
@@ -504,9 +504,9 @@ class File extends stdClass
      */
     private function _toFile($parameter)
     {
-        if (is_file($parameter)) {
+        if (is_file($parameter)) 
             return $parameter;
-        }
+        
         if (is_object($parameter)) {
             if (method_exists($parameter, "getObjectID")) {
                 if ($this->_objectid == $parameter->getObjectID()) {
@@ -514,6 +514,9 @@ class File extends stdClass
                 }
             }
         }
+        if (is_string($parameter)) 
+            return $parameter;
+
         throw new Exception('Invalid Parameter');
     }
 }
