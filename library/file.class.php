@@ -120,16 +120,19 @@ class File extends stdClass
      */
     public function toArray()
     {
-       if ($this->_value==null)
+        if ($this->_value==null) {
             throw new Exception("Cannot determine file name");
+        }
 
-        if ($this->_exists==false) 
+        if ($this->_exists==false) {
             throw new Exception("File does not exist");
+        }
 
-        if ($this->_isReadable==false)
+        if ($this->_isReadable==false) {
             throw new Exception("File is not readable");
+        }
 
-       return file($this->_value);
+        return file($this->_value);
 
     }
     /**
@@ -141,18 +144,21 @@ class File extends stdClass
      *
      * @return boolean
      */
-    public function touch($time=null,$atime=null)
+    public function touch($time = null, $atime = null)
     {
-       if ($this->_value==null)
+        if ($this->_value==null) {
             throw new Exception("Cannot determine file name");
+        }
 
-       if ($time==null)
+        if ($time==null) {
             return touch($this->_value);
+        }
 
-       if ($atime==null)
-            return touch($this->_value,$time);
+        if ($atime==null) {
+            return touch($this->_value, $time);
+        }
 
-       return touch($this->_value,$time,$atime);
+        return touch($this->_value, $time, $atime);
     }
     /**
      * Function disk_free_space
@@ -163,58 +169,66 @@ class File extends stdClass
      */
     public function disk_free_space()
     {
-       if($this->_dirname == null)
+        if ($this->_dirname == null) {
             throw new Exception("Cannot determine directory");
+        }
 
 
-       return disk_free_space($this->_dirname);
+        return disk_free_space($this->_dirname);
 
     }
     /**
-     * Function delete 
+     * Function delete
      *
      * @throws mixed
-     * 
+     *
      * @return bool
-     * 
+     *
      */
     public function delete()
     {
-        if ($this->_exists==false) 
+        if ($this->_exists==false) {
             throw new Exception("File does not exist");
-        if ($this->_isReadable==false)
+        }
+        if ($this->_isReadable==false) {
             throw new Exception("File is not readable");
-        if ($this->_isWriteable==false)
+        }
+        if ($this->_isWriteable==false) {
             throw new Exception("File is not writeable");
+        }
 
-       if (!unlink($this->_value))
+        if (!unlink($this->_value)) {
             throw new Exception("File could not be deleted");
+        }
 
-      $this->_init();
+        $this->_init();
 
-       return true;
+        return true;
 
     }
     /**
-     * Function copy 
+     * Function copy
      *
      * @param string
      * @throws mixed
-     * 
+     *
      * @return bool
      */
     public function copy($target)
     {
-        if ($this->_exists==false) 
+        if ($this->_exists==false) {
             throw new Exception("File does not exist");
+        }
 
-        if ($this->_isReadable==false)
+        if ($this->_isReadable==false) {
             throw new Exception("File is not readable");
+        }
 
-        if (!copy($this->_value,$target))
+        if (!copy($this->_value, $target)) {
             throw new Exception("File could not be copied");
+        }
 
-       return true;
+        return true;
 
     }
 
@@ -227,36 +241,43 @@ class File extends stdClass
      *
      * @return string
      */
-    public function group($newgroup=null)
+    public function group($newgroup = null)
     {
-        if ($this->_exists==false) 
+        if ($this->_exists==false) {
             throw new Exception("File does not exist");
+        }
         
-        if ($this->_isReadable==false)
+        if ($this->_isReadable==false) {
             throw new Exception("File is not readable");
+        }
 
         $groupid= filegroup($this->_value);
 
-        if ($groupid === false) 
+        if ($groupid === false) {
             throw new Exception("Error getting group id");
+        }
 
         $group=posix_getgrgid($groupid);
 
-        if (!is_array($group)) 
+        if (!is_array($group)) {
             throw new Exception("Error getting group id");
+        }
 
-        if ($newgroup==null)
+        if ($newgroup==null) {
             return $group['name'];
+        }
 
-       if ($this->_isWriteable == false)
+        if ($this->_isWriteable == false) {
             throw new Exception("File is not writeable");
+        }
 
-       if (chgrp($this->_value,$newgroup)===false)
+        if (chgrp($this->_value, $newgroup)===false) {
             throw new Exception("Unable to change File group");
+        }
 
-      clearstatcache();
+        clearstatcache();
 
-      return $this->group();
+        return $this->group();
 
     }
     /**
@@ -268,34 +289,41 @@ class File extends stdClass
      */
     public function owner($newowner = null)
     {
-        if ($this->_exists==false) 
+        if ($this->_exists==false) {
             throw new Exception("File does not exist");
+        }
         
-        if ($this->_isReadable==false)
+        if ($this->_isReadable==false) {
             throw new Exception("File is not readable");
+        }
 
         $userid= fileowner($this->_value);
 
-        if ($userid === false) 
+        if ($userid === false) {
             throw new Exception("Could not get file owner");
+        }
 
         $user=posix_getpwuid($userid);
 
-        if (!is_array($user)) 
+        if (!is_array($user)) {
             throw new Exception("Could not get file owner");
+        }
 
-        if ($newowner == null)
+        if ($newowner == null) {
              return $user['name'];
+        }
 
-        if ($this->_isWriteable == false)
+        if ($this->_isWriteable == false) {
             throw new Exception("File is not writeable");
+        }
 
-        if (chown($this->_value,$newowner)===false)
+        if (chown($this->_value, $newowner)===false) {
             throw new Exception("Could not set file owner");
+        }
 
         clearstatcache();
 
-       return $this->owner();
+        return $this->owner();
     }
     /**
      * Function toString converts file to string
@@ -307,18 +335,20 @@ class File extends stdClass
      */
     public function toString()
     {
-        if ($this->_exists==false) 
+        if ($this->_exists==false) {
             throw new Exception("File does not exist");
+        }
 
-        if ($this->_isReadable==false)
+        if ($this->_isReadable==false) {
             throw new Exception("File is not readable");
+        }
 
-      return file_get_contents($this->_value);
+        return file_get_contents($this->_value);
 
     }
     /**
      * Function putString
-     * 
+     *
      *
      * @param string
      * @throws mixed
@@ -327,12 +357,12 @@ class File extends stdClass
      */
     public function putString($content)
     {
-      return file_put_contents($this->_value,$content);
+        return file_put_contents($this->_value, $content);
 
     }
     /**
      * Function append
-     * 
+     *
      *
      * @param string
      * @throws mixed
@@ -341,13 +371,14 @@ class File extends stdClass
      */
     public function append($text)
     {
-        $fp = fopen($this->_value,"r+");
+        $fp = fopen($this->_value, "r+");
 
-        if (flock($fp, LOCK_EX)===false)
+        if (flock($fp, LOCK_EX)===false) {
             throw new Exception("Unable to lock file");
+        }
 
 
-            fwrite($fp,$text);
+            fwrite($fp, $text);
 
             fflush($fp);
 
@@ -370,27 +401,33 @@ class File extends stdClass
 
         $mode=intval($mode);
 
-        if ($this->_exists==false) 
+        if ($this->_exists==false) {
             throw new Exception("File does not exist");
+        }
 
-        if ($this->_isWriteable == false)
+        if ($this->_isWriteable == false) {
             throw new Exception("File is not writeable");
+        }
 
-       $valid_mode=false;
+        $valid_mode=false;
 
-       if ($mode>777)
-          throw new Exception("Bad file mode");
+        if ($mode>777) {
+            throw new Exception("Bad file mode");
+        }
 
-       if ($mode<0)
-          throw new Exception("Bad file mode");
+        if ($mode<0) {
+            throw new Exception("Bad file mode");
+        }
 
-      $characters=str_split($mode);
+        $characters=str_split($mode);
 
-     foreach($characters as $character)
-        if (intval($character)>7)
-          throw new Exception("Bad file mode");
+        foreach ($characters as $character) {
+            if (intval($character)>7) {
+                throw new Exception("Bad file mode");
+            }
+        }
 
-    return chmod($this->_value,$mode);
+        return chmod($this->_value, $mode);
 
     }
 
