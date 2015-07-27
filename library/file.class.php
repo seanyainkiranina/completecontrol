@@ -13,7 +13,6 @@ class File extends stdClass
 {
     private $_value = null;
     private $_objectid = '0715221e-59e8-9589-434093851da8';
-    private $_mutable = false;
     private $_filemode = false;
 
     private $_isDir = false;
@@ -46,7 +45,7 @@ class File extends stdClass
      */
     public function __construct($param = null)
     {
-        $this->_value = $param;
+        $this->_value = $this->_toFile($parameter);
         $this->_init();
     }
     /**
@@ -98,22 +97,6 @@ class File extends stdClass
         $this->_init();
     }
     /**
-     * Function setMutable sets changablity of the internal string.
-     * Setting to true causes each function to call its internal string
-     *
-     *
-     * @param bool
-     *
-     * @return none
-     */
-    public function setMutable($mutable)
-    {
-        if (!is_bool($mutable)) {
-            throw new Exception('Non boolean parameter');
-        }
-        $this->_mutable = $mutable;
-    }
-    /**
      * Function setReturnMode changes returns File object rather
      * then strings
      *
@@ -129,12 +112,111 @@ class File extends stdClass
         $this->_filemode = $mode;
     }
     /**
+     * Function toArray return array of file
+     *
+     * @throws mixed
+     * @return array
+     *
+     */
+    public function toArray()
+    {
+       if ($this->_value==null)
+            throw new Exception("Cannot determine file name");
+
+        if ($this->_exists==false) 
+            throw new Exception("File does not exist");
+
+        if ($this->_isReadable==false)
+            throw new Exception("File is not readable");
+
+       return file($this->_value);
+
+    }
+    /**
+     * Function touch
+     *
+     * @param time
+     * @param time
+     * @throws mixed
+     *
+     * @return boolean
+     */
+    public function touch($time=null,$atime=null)
+    {
+       if ($this->_value==null)
+            throw new Exception("Cannot determine file name");
+
+       if ($time==null)
+            return touch($this->_value);
+
+       if ($atime==null)
+            return touch($this->_value,$time);
+
+       return touch($this->_value,$time,$atime);
+    }
+    /**
+     * Function disk_free_space
+     *
+     * @throws mixed
+     *
+     * @return float
+     */
+    public function disk_free_space()
+    {
+       if($this->_dirname == null)
+            throw new Exception("Cannot determine directory");
+
+
+       return disk_free_space($this->_dirname);
+
+    }
+    /**
+     * Function delete 
+     *
+     * @throws mixed
+     * 
+     * @return bool
+     * 
+     */
+    public function delete()
+    {
+        if ($this->_exists==false) 
+            throw new Exception("File does not exist");
+        if ($this->_isReadable==false)
+            throw new Exception("File is not readable");
+        if ($this->_isWriteable==false)
+            throw new Exception("File is not writeable");
+
+       if (!unlink($this->_value))
+            throw new Exception("File could not be deleted");
+
+      $this->_init();
+
+       return true;
+
+    }
+    /**
      * Function copy 
      *
      * @param string
+     * @throws mixed
      * 
-     * @return mixed
+     * @return bool
      */
+    public function copy($target)
+    {
+        if ($this->_exists==false) 
+            throw new Exception("File does not exist");
+
+        if ($this->_isReadable==false)
+            throw new Exception("File is not readable");
+
+        if (!copy($this->_value,$target))
+            throw new Exception("File could not be copied");
+
+       return true;
+
+    }
 
     /**
      * Function group returns file group owner as string or null
@@ -214,6 +296,68 @@ class File extends stdClass
         clearstatcache();
 
        return $this->owner();
+    }
+    /**
+     * Function toString converts file to string
+     *
+     *
+     * @throws mixed
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        if ($this->_exists==false) 
+            throw new Exception("File does not exist");
+
+        if ($this->_isReadable==false)
+            throw new Exception("File is not readable");
+
+      return file_get_contents($this->_value);
+
+    }
+    /**
+     * Function putString
+     * 
+     *
+     * @param string
+     * @throws mixed
+     *
+     * @return bool
+     */
+    public function putString($content)
+    {
+      return file_put_contents($this->_value,$content);
+
+    }
+    /**
+     * Function append
+     * 
+     *
+     * @param string
+     * @throws mixed
+     *
+     * @return bool
+     */
+    public function append($text)
+    {
+        $fp = fopen($this->_value,"r+");
+
+        if (flock($fp, LOCK_EX)===false)
+            throw new Exception("Unable to lock file");
+
+
+            fwrite($fp,$text);
+
+            fflush($fp);
+
+            flock($fp, LOCK_UN);
+
+            fclose($fp);
+
+           $this->_init();
+
+           return true;
     }
     /**
      * Function chmod
