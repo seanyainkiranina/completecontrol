@@ -89,16 +89,18 @@ class String extends stdClass
         $this->_string = $this->_toString($string);
     }
     /**
-     * Function checks if internal string isset
+     * Function isempty checks if internal string isset
      * then if it is empty.
      *
      * @return bool
      *
      */
-    public function isset()
+    public function isempty()
     {
-
-      return (isset($this->_string)? empty($this->_string) : false);
+	if (isset($this->_string))
+	   if (empty($this->_string))
+               return true;
+       return false;
 
     }
     /**
