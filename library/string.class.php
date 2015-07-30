@@ -90,7 +90,7 @@ class String extends stdClass
     }
     /**
      * Function isempty checks if internal string isset
-     * then if it is empty.
+     * then if it is empty. Return of true is an empty or unset internal string
      *
      * @return bool
      *
@@ -98,9 +98,9 @@ class String extends stdClass
     public function isempty()
     {
 	if (isset($this->_string))
-	   if (empty($this->_string))
-               return true;
-       return false;
+	   return (!empty($this->_string))
+
+       return true;
 
     }
     /**
