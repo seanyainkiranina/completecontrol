@@ -89,6 +89,19 @@ class String extends stdClass
         $this->_string = $this->_toString($string);
     }
     /**
+     * Function checks if internal string isset
+     * then if it is empty.
+     *
+     * @return bool
+     *
+     */
+    public function isset()
+    {
+
+      return (isset($this->_string)? empty($this->_string) : false);
+
+    }
+    /**
      * Function setMutable sets changablity of the internal string.
      * Setting to true causes each function to call its internal string
      *
