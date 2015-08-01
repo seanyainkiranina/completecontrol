@@ -36,7 +36,7 @@ class DecimalTest extends PHPUnit_Framework_TestCase
          $this->assertEquals(2, $decimal->get());
 
 
-     }
+        }
         public function testAdd()
         {
 
