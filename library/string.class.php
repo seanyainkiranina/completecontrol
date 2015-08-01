@@ -90,6 +90,27 @@ class String extends stdClass
         $this->_string = $this->_toString($string);
     }
     /**
+     * Function instances itself from xml serialized version of the object.
+     *
+     * @return String
+     */
+    public function fromSerial($serialObject)
+    {
+
+              return unserializer($serialObject);
+    }
+    /**
+     * Function returns xml serialized version of the object.
+     *
+     * @return string
+     *
+     */
+    public function toSerial()
+    {
+
+        return serialize($this);
+    }
+    /**
      * Function isempty checks if internal string isset
      * then if it is empty. Return of true is an empty or unset internal string
      *
