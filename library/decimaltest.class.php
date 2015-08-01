@@ -36,7 +36,7 @@ class DecimalTest extends PHPUnit_Framework_TestCase
          $this->assertEquals(2, $decimal->get());
 
 
-     }
+        }
         public function testAdd()
         {
 
@@ -107,6 +107,18 @@ class DecimalTest extends PHPUnit_Framework_TestCase
                 (($x*$x)/$y),
                 $decimal->divide($decimal->multiply($x, $x), $y)->get()
             );
+
+
+        }
+        public function testSerial()
+        {
+            $decimal = new Decimal(10);
+
+            $decimal2 =$decimal->fromSerial($decimal->toSerial());
+
+            $this->assertEquals(1000, $decimal2->power(3));
+            $this->assertEquals(10, $decimal->get());
+
 
 
         }

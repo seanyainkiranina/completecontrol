@@ -92,6 +92,27 @@ class Decimal extends stdClass
         $this->_mutable = $mutable;
     }
     /**
+     * Function instances itself from xml serialized version of the object.
+     *
+     * @return Decimal
+     */
+    public function fromSerial($serialObject)
+    {
+
+              return unserializer($serialObject);
+    }
+    /**
+     * Function returns xml serialized version of the object.
+     *
+     * @return string
+     *
+     */
+    public function toSerial()
+    {
+
+        return serialize($this);
+    }
+    /**
      * Function setReturnMode changes returns to decimal objects rather
      * then numeric
      *
