@@ -71,6 +71,66 @@ class File extends stdClass
         return call_user_func_array($method, $params);
     }
     /**
+     * Readonly property test if directory
+     *
+     * @return bool
+     */
+    public function isDir()
+    {
+        $this->_init();
+          return $this->_isDir;
+    }
+    /**
+     * Readonly property test if executable
+     *
+     * @return bool
+     */
+    public function isExecutable()
+    {
+        $this->_init();
+         return $this->_isExecutable;
+    }
+    /**
+     * Readonly property test if readable
+     *
+     * @return bool
+     */
+    public function isReadable()
+    {
+        $this->_init();
+          return $this->_isReadable;
+    }
+    /**
+     * Readonly property test if writeable
+     *
+     * @return bool
+     */
+    public function isWriteable()
+    {
+        $this->_init();
+         return $this->_isWriteable;
+    }
+    /**
+     * Readonly property test if uploadedfile
+     *
+     * @return bool
+     */
+    public function isUploadedFile()
+    {
+        $this->_init();
+        return $this->_isUploadedFile;
+    }
+    /**
+     * Readonly property file size
+     *
+     * @return int
+     */
+    public function size()
+    {
+        $this->_init();
+        return $this->_size;
+    }
+    /**
      * Function get
      *
      * @return string
