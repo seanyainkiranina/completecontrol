@@ -75,6 +75,7 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         return $this->_return($this->_string);
     }
     /**
@@ -97,10 +98,11 @@ class String extends stdClass
      */
     public function isempty()
     {
-	if (isset($this->_string))
-	   return (!empty($this->_string))
+        if (isset($this->_string)) {
+            return (!empty($this->_string));
+        }
 
-       return true;
+        return true;
 
     }
     /**
@@ -128,11 +130,10 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         $returnString = $this->_string;
         $returnString.= $string;
-        if ($this->_mutable == true) {
-            $this->_string = $returnString;
-        }
+        
         return $this->_return($returnString);
     }
     /**
@@ -150,18 +151,18 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         if ($ignorecase == false) {
             if (strpos($this->_string, $searchString) === false) {
                 return false;
             }
-        } else {
-            return true;
         }
-        if ($ignorecase == true) {
-            if (stripos($this->_string, $searchString) === false) {
-                return false;
-            }
+            
+        if (stripos($this->_string, $searchString) === false) {
+            return false;
         }
+            
+        
         return true;
     }
     /**
@@ -176,11 +177,11 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
-        $uppercase = strtoupper($this->_string);
-        if ($this->_mutable == true) {
-            $this->_string = $uppercase;
-        }
-        return $this->_return($uppercase);
+        
+        
+        return $this->_return(
+            strtoupper($this->_string)
+        );
     }
     /**
      * Function strstr wrapper for strstr
@@ -197,9 +198,11 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         if ($before_needle == false) {
             return $this->_return(strstr($this->_string, $needle));
         }
+        
         return $this->_return(strstr($this->_string, $needle, $before_needle));
     }
     /**
@@ -216,6 +219,7 @@ class String extends stdClass
         if ($length == null) {
             return $this->_return(substr($this->_string, $start));
         }
+        
         return $this->_return(substr($this->_string, $start, $length));
     }
     /**
@@ -230,11 +234,11 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
-        $returnString = str_shuffle($this->_string);
-        if ($this->_mutable == true) {
-            $this->_string = $returnString;
-        }
-        return $this->_return($returnString);
+        
+        
+        return $this->_return(
+            str_shuffle($this->_string)
+        );
     }
     /**
      * Function reverse wrapper for strrev
@@ -249,11 +253,11 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
-        $returnString = strrev($this->_string);
-        if ($this->_mutable == true) {
-            $this->_string = $returnString;
-        }
-        return $this->_return($returnString);
+        
+        
+        return $this->_return(
+            strrev($this->_string)
+        );
     }
     /**
      * Function lc wrapper for strolower
@@ -268,11 +272,11 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
-        $returnString = strtolower($this->_string);
-        if ($this->_mutable == true) {
-            $this->_string = $returnString;
-        }
-        return $this->_return($returnString);
+        
+        
+        return $this->_return(
+            strtolower($this->_string)
+        );
     }
     /**
      * Function replace wrapper for str_replace
@@ -288,37 +292,31 @@ class String extends stdClass
     {
         $search = $this->_toString($search);
         $replace = $this->_toString($replace);
+
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
-        if ($count == null) {
-            if ($ignore_case == true) {
-                $returnString = str_ireplace($search, $replace, $this->_string);
-                if ($this->_mutable == true) {
-                    $this->_string = $returnString;
-                }
-                return $this->_return($returnString);
-            }
-        } else {
-            $returnString = str_replace($search, $replace, $this->_string);
-            if ($this->_mutable == true) {
-                $this->_string = $returnString;
-            }
-            return $this->_return($returnString);
+        
+        if ($count == null && $ignore_case == true) {
+                return $this->_return(
+                    str_ireplace($search, $replace, $this->_string)
+                );
         }
+        if ($count == null && $ignore_case == false) {
+            return $this->_return(
+                str_replace($search, $replace, $this->_string)
+            );
+        }
+
         if ($ignore_case == true) {
-            $returnString = str_ireplace($search, $replace, $this->_string, $count);
-            if ($this->_mutable == true) {
-                $this->_string = $returnString;
-            }
-            return $this->_return($returnString);
-        } else {
-            $returnString = str_replace($search, $replace, $this->_string, $count);
-            if ($this->_mutable == true) {
-                $this->_string = $returnString;
-            }
-            return $this->_return($returnString);
+            return $this->_return(
+                str_ireplace($search, $replace, $this->_string, $count)
+            );
         }
+            
+            return $this->_return(
+                str_replace($search, $replace, $this->_string, $count)
+            );
     }
     /**
      * Function similar wrapper for similar_text
@@ -345,6 +343,7 @@ class String extends stdClass
         if ($this->_string == $string) {
             return true;
         }
+        
         return false;
     }
     /**
@@ -377,6 +376,7 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         return str_word_count($this->_string);
     }
     /**
@@ -389,9 +389,11 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         if ($cslashes != null) {
             return $this->_return(addcslashes($this->_string, $charlist));
         }
+        
         return $this->_return(addslashes($this->_string));
     }
     /**
@@ -401,22 +403,28 @@ class String extends stdClass
     public function trim($character_mask = null, $left = false)
     {
         $character_mask = $this->_toString($character_mask);
-        if ($left == false) {
-            if ($character_mask == null) {
-                $returnString = rtrim($this->_string);
-                return $this->_return($returnString);
-            }
-        } else {
-            $returnString = rtrim($this->_string, $character_mask);
-            return $this->_return($returnString);
+        if ($left == false && $character_mask != null) {
+                return $this->_return(
+                    rtrim($this->_string, $character_mask)
+                );
         }
-        if ($character_mask == null) {
-            $returnString = ltrim($this->_string);
-            return $this->_return($returnString);
-        } else {
-            $returnString = ltrim($this->_string, $character_mask);
-            return $this->_return($returnString);
+            
+        if ($left == false && $character_mask == null) {
+                return $this->_return(
+                    rtrim($this->_string)
+                );
         }
+        
+
+        if ($left == true && $character_mask == null) {
+            return $this->_return(
+                ltrim($this->_string)
+            );
+        }
+         
+            return $this->_return(
+                ltrim($this->_string, $character_mask)
+            );
     }
     /**
      *  Wrapper for str_split, explode, and split.
@@ -428,6 +436,7 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         if ($delimiter == null && $limit == null) {
             $this->_array = str_split($this->_string);
             if ($this->_array === false) {
@@ -445,6 +454,7 @@ class String extends stdClass
         if ($delimiter == null && $limit != null) {
             return str_split($this->_string, $limit);
         }
+        
         return explode($delimiter, $this->_string, $limit);
     }
     /**
@@ -459,9 +469,11 @@ class String extends stdClass
         if ($string == null) {
             return null;
         }
+        
         if (is_string($string)) {
             return $string;
         }
+        
         if (is_object($string)) {
             if (method_exists($string, "getObjectID")) {
                 if ($this->_objectid == $string->getObjectID()) {
@@ -469,6 +481,9 @@ class String extends stdClass
                 }
             }
         }
+                
+            
+        
         throw new Exception('String Parameter Error');
     }
     /**
@@ -482,6 +497,7 @@ class String extends stdClass
         if ($this->_stringmode == false) {
             return $string;
         }
+        
         return new String($string);
     }
     /**
@@ -493,11 +509,14 @@ class String extends stdClass
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
+        
         if ($this->_token == null) {
             if ($token == null) {
                 throw new Exception('Empty token');
             }
         }
+            
+        
         if ($this->_token != $token) {
             $this->_token = $token;
             $this->_array = array();
@@ -510,10 +529,12 @@ class String extends stdClass
         if ($this->_array == null) {
             throw new Exception('Empty array');
         }
+        
         $_position_in_string++;
         if (($_position_in_string - 1) > count($this->_array)) {
             return null;
         }
+        
         return $this->_return($this->_array[$position_in_string - 1]);
     }
 }
