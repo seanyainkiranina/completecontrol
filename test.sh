@@ -1,6 +1,11 @@
 #!/bin/bash
+##########################################################################
+#  Bash script to run unit testing and PSR2 formatting
+# Adding a argument uses the arguenent to commit the changes to git repo
+# if there are no unit or php test errors.
+##########################################################################
 
-
+# Test to make sure php is in path
 php=`which php`
 if [  -z $php ]
 then
@@ -8,6 +13,7 @@ then
     exit
 fi
 
+# Test to make sure phpunit is in path
 phpunit=`which phpunit`
 if [  -z $phpunit ]
 then
@@ -15,6 +21,8 @@ then
     exit
 fi
 
+# Test to make sure phpcbf is in path
+# if its not we just don't do the PSR2
 phpcbf=`which phpcbf`
 
 FILES=`ls ./library/*.php`
@@ -27,10 +35,12 @@ then
     done
 fi
 
+# No errors so far
 errors=0
 
 BADFILES=""
 
+# All unit test files must be named [class]test.class.php
 FILES=`ls ./library/*test.class.php`
      for file in $FILES
      do
@@ -58,10 +68,14 @@ then
          if [ ! -z "$1" ]
          then 
             git commit -m "$1"
+            git push
          fi
 else
      for file in $BADFILES
      do
+# Syntax errors will fail on the unit test also 
+# Show what failed by rerunning the unit test on the bad files
+
          if [ -f $file ] 
          then 
             phpunit --verbose $file 
