@@ -117,7 +117,7 @@ class File extends stdClass
      */
     public function isFile()
     {
-       return $this->_isFile;
+        return $this->_isFile;
     }
     /**
      * Function toArray return array of file
@@ -512,8 +512,9 @@ class File extends stdClass
      */
     private function _toFile($parameter)
     {
-        if (is_file($parameter)) 
+        if (is_file($parameter)) {
             return $parameter;
+        }
         
         if (is_object($parameter)) {
             if (method_exists($parameter, "getObjectID")) {
@@ -522,8 +523,9 @@ class File extends stdClass
                 }
             }
         }
-        if (is_string($parameter)) 
+        if (is_string($parameter)) {
             return $parameter;
+        }
 
         throw new Exception('Invalid Parameter');
     }
