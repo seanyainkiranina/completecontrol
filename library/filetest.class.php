@@ -37,6 +37,7 @@ class FileTest extends PHPUnit_Framework_TestCase
        $array=$file->toArray();
        $this->assertEquals(1,count($array));
        $this->assertEquals(true,$file->delete());
+       $this->assertEquals(false,$file->isFile());
      
      }
 

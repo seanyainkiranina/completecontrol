@@ -112,6 +112,14 @@ class File extends stdClass
         $this->_filemode = $mode;
     }
     /**
+     * Function isFile returns true if file exists
+     * @return bool
+     */
+    public function isFile()
+    {
+       return $this->_isFile;
+    }
+    /**
      * Function toArray return array of file
      *
      * @throws mixed
