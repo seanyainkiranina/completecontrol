@@ -23,24 +23,21 @@ class FileTest extends PHPUnit_Framework_TestCase
          $this->assertEquals('root', $file->owner());
      
 
-      }
-     public function testWrite()
-     {
-        $file = new File('/tmp/test');
-
-        $this->assertEquals(true,$file->append('test'));
-        $this->assertEquals(true,$file->copy('/tmp/test2'));
-        $this->assertEquals(true,$file->delete());
-
-        $file = new File('/tmp/test2');
-
-       $array=$file->toArray();
-       $this->assertEquals(1,count($array));
-       $this->assertEquals(true,$file->delete());
-       $this->assertEquals(false,$file->isFile());
-     
      }
+        public function testWrite()
+        {
+            $file = new File('/tmp/test');
 
+            $this->assertEquals(true, $file->append('test'));
+            $this->assertEquals(true, $file->copy('/tmp/test2'));
+            $this->assertEquals(true, $file->delete());
 
+            $file = new File('/tmp/test2');
+
+            $array=$file->toArray();
+            $this->assertEquals(1, count($array));
+            $this->assertEquals(true, $file->delete());
+            $this->assertEquals(false, $file->isFile());
+     
+        }
 }
-
