@@ -88,6 +88,7 @@ class Decimal extends stdClass
         if (!is_bool($mutable)) {
             throw new Exception('Non boolean parameter');
         }
+        
         $this->_mutable = $mutable;
     }
     /**
@@ -103,6 +104,7 @@ class Decimal extends stdClass
         if (!is_bool($mode)) {
             throw new Exception('Non boolean parameter');
         }
+        
         $this->_decimalmode = $mode;
     }
     /**
@@ -114,9 +116,16 @@ class Decimal extends stdClass
      */
     private function _return($parameter)
     {
+        if ($this->_mutable == true) {
+            $this->_value = $parameter;
+        }
+        
+
         if ($this->_decimalmode == false) {
             return $parameter;
         }
+        
+        
         return new Decimal($parameter);
     }
     /**
@@ -131,6 +140,7 @@ class Decimal extends stdClass
         if (is_numeric($parameter)) {
             return $parameter;
         }
+        
         if (is_object($parameter)) {
             if (method_exists($parameter, "getObjectID")) {
                 if ($this->_objectid == $parameter->getObjectID()) {
@@ -138,6 +148,9 @@ class Decimal extends stdClass
                 }
             }
         }
+                
+            
+        
         throw new Exception('Invalid Parameter');
     }
     /**
@@ -153,12 +166,12 @@ class Decimal extends stdClass
         if ($this->_value != null) {
             $returnValue = $this->_value;
         }
+        
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue + $this->_toNumber($parameter);
         }
-        if ($this->_mutable == true) {
-            $this->_value = $returnValue;
-        }
+        
+        
         return $this->_return($returnValue);
     }
     /**
@@ -180,9 +193,7 @@ class Decimal extends stdClass
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue - $this->_toNumber($parameter);
         }
-        if ($this->_mutable == true) {
-            $this->_value = $returnValue;
-        }
+        
         return $this->_return($returnValue);
     }
     /**
@@ -204,9 +215,8 @@ class Decimal extends stdClass
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue * $this->_toNumber($parameter);
         }
-        if ($this->_mutable == true) {
-            $this->_value = $returnValue;
-        }
+        
+
         return $this->_return($returnValue);
     }
     /**
@@ -222,6 +232,7 @@ class Decimal extends stdClass
         if (count($parameters) == 0) {
             throw new Exception("Invalid parameters");
         }
+        
         $returnValue = 0;
         if ($this->_value != null) {
             $returnValue = $this->_value;
@@ -231,9 +242,7 @@ class Decimal extends stdClass
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue / $this->_toNumber($parameter);
         }
-        if ($this->_mutable == true) {
-            $this->_value = $returnValue;
-        }
+        
         return $this->_return($returnValue);
     }
     /**
@@ -248,14 +257,15 @@ class Decimal extends stdClass
         if ($this->_value == null) {
             throw new Exception("Invalid base");
         }
+        
         if ($parameter == null) {
             throw new Exception("Invalid exponential");
         }
-        $returnValue = pow($this->_value, $this->_toNumber($parameter));
-        if ($this->_mutable == true) {
-            $this->_value = $returnValue;
-        }
-        return $this->_return($returnValue);
+        
+
+        return $this->_return(
+            pow($this->_value, $this->_toNumber($parameter))
+        );
     }
     /**
      * Function returns absolute value of parameter of if null sets interal
@@ -270,19 +280,17 @@ class Decimal extends stdClass
                 throw new Exception("Parameter missing");
             }
         }
+            
+        
         if ($parameter == null) {
-            if ($this->_mutable == true) {
-                $this->_value = abs($this->_value);
-                return $this->_value;
-            }
-        } else {
-            return abs($this->_value);
+                return $this->_return(
+                    abs($this->_value)
+                );
         }
-        $returnValue = abs($this->_toNumber($parameter));
-        if ($this->_mutable == true) {
-            $this->_value = $returnValue;
-        }
-        return $this->_return($returnValue);
+            
+        return $this->_return(
+            abs($this->_toNumber($parameter))
+        );
     }
     /**
      * Function round
@@ -297,18 +305,16 @@ class Decimal extends stdClass
                 throw new Exception("Parameter missing");
             }
         }
+            
+        
         if ($parameter == null) {
-            if ($this->_mutable == true) {
-                $this->_value = round($this->_value, $precision);
-                return $this->_value;
-            }
-        } else {
-            return round($this->_value, $precision);
+              return $this->_return(
+                  round($this->_value, $precision)
+              );
         }
-        $returnValue = round($this->_toNumber($parameter), $precision);
-        if ($this->_mutable == true) {
-            $this->_value = $returnValue;
-        }
-        return $this->_return($returnValue);
+
+              return $this->_return(
+                  round($parameter, $precision)
+              );
     }
 }
