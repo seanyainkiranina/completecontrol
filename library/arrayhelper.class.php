@@ -207,10 +207,16 @@ class ArrayHelper extends stdClass
      *
      * @return array
      */
-    public function exchange()
+    public function exchange($array = null)
     {
+        $tempArray=$this->_value;
+
+        if (is_array($array)) {
+            $tempArray=$array;
+
+        }
         return $this->_return(
-            array_flip($this->_value)
+            array_flip($tempArray)
         );
 
     }
@@ -221,30 +227,43 @@ class ArrayHelper extends stdClass
      *
      * @return array
      */
-    public function filter($callback)
+    public function filter($callback, $array = null)
     {
+        $tempArray=$this->_value;
+        if (is_array($array)) {
+            $tempArray=$array;
+
+        }
         if (!is_function($callback)) {
             throw new Exception('Invalid Parameter');
         }
      
         return $this->_return(
-            array_filter($this->_value, $callback, ARRAY_FILTER_USE_BOTH)
+            array_filter($tempArray, $callback, ARRAY_FILTER_USE_BOTH)
         );
 
     }
     /**
      * Function returns an array of all the values present in each array
+     * @param array
+     * @param array | optional
      *
      * @return array
      */
-    public function intersect($array)
+    public function intersect($array, $array2 = null)
     {
+        $tempArray =$this->_value;
+
+        if (is_array($array)) {
+            $tempArray =$array2;
+        }
+
         if (!is_array($array)) {
             throw new Exception('Invalid Parameter');
         }
 
         return $this->_return(
-            array_intersect($this->_value, $array)
+            array_intersect($tempArray, $array)
         );
     }
     /**
@@ -314,7 +333,7 @@ class ArrayHelper extends stdClass
              return in_array($value, $this->_value, true);
         }
 
-               return in_array($value, $this->_value, true);
+               return in_array($value, $array, true);
 
     }
     /**
@@ -341,10 +360,10 @@ class ArrayHelper extends stdClass
     public function toLine($deliminater, $array = null)
     {
         if ($array==null || (!is_array($array))) {
-             return implode($deliminater, $array);
+             return implode($deliminater, $this->_value);
         }
          
-             return implode($deliminater, $this->_value);
+             return implode($deliminater, $array);
     }
     /**
      * Compact variables into key name value array
