@@ -28,14 +28,23 @@ class FileTest extends PHPUnit_Framework_TestCase
         {
             $file = new File('/tmp/test');
 
-            $this->assertEquals(true, $file->append('test'));
+            $this->assertEquals(true, $file->append("test\n"));
+            $this->assertEquals(true, $file->append("test\n"));
             $this->assertEquals(true, $file->copy('/tmp/test2'));
             $this->assertEquals(true, $file->delete());
 
             $file = new File('/tmp/test2');
 
+            $linecount=0;
+
+            foreach ($file->lines() as $line) {
+                $linecount=$linecount+1;
+
+            }
+
             $array=$file->toArray();
-            $this->assertEquals(1, count($array));
+            $this->assertEquals(2, count($array));
+            $this->assertEquals(2, $linecount);
             $this->assertEquals(true, $file->delete());
             $this->assertEquals(false, $file->isFile());
      

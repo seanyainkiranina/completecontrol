@@ -14,6 +14,7 @@ class File extends stdClass
     private $_value = null;
     private $_objectid = '0715221e-59e8-9589-434093851da8';
     private $_filemode = false;
+    private $_array = array();
 
     private $_isDir = false;
     private $_isExecutable = false;
@@ -33,6 +34,9 @@ class File extends stdClass
     private $_ctime = null;
     private $_mtime = null;
     private $_size = null;
+
+
+    private $_saved_size =null;
 
 
     /**
@@ -465,8 +469,6 @@ class File extends stdClass
         if (flock($fp, LOCK_EX)===false) {
             throw new Exception("Unable to lock file");
         }
-
-
             fwrite($fp, $text);
 
             fflush($fp);
@@ -517,6 +519,36 @@ class File extends stdClass
         }
 
         return chmod($this->_value, $mode);
+
+    }
+    /**
+     * Function lines factory to loop through a file
+     *
+     * @return string
+     */
+    public function &lines()
+    {
+        if ($this->_value==null) {
+            throw new Exception("Bad file mode");
+        }
+       
+        if ($this->_isReadable ==false) {
+            throw new Exception("File is not readable");
+        }
+     
+        $this->_init();
+
+        if ($this->_saved_size != $this->_size) {
+            $this->_array = file($this->_value);
+            $this->_init();
+            $this->_saved_size = $this->_size;
+        }
+
+        foreach ($this->_array as $line) {
+            yield $line;
+
+        }
+
 
     }
 
