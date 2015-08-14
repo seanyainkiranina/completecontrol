@@ -140,14 +140,26 @@ class String extends stdClass
     }
     /**
      * Function concat joins string passed to internal string
+     * second parameter optional will concat first and second parameter
+     * and set internal string if setmutable is true.
      *
      * @param string
+     * @param string optional
      *
      * @return string
      */
-    public function concat($string)
+    public function concat($string, $string2 = null)
     {
-        $string = $this->_toString($string);
+        if ($string == null) {
+            throw new Exception('Empty parameter 1');
+        }
+        
+        if ($string2 != null) {
+             $returnString = $string;
+             $returnString .= $string2;
+             return $this->_return($returnString);
+
+        }
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -187,14 +199,21 @@ class String extends stdClass
         return true;
     }
     /**
-     * Function uc upper case version of string
+     * Function uc upper case version of string optional parameter
+     * returned as uppercase or set the value of the internal if
+     * setmutable is true.
      *
      * @param none
      *
      * @return string
      */
-    public function uc()
+    public function uc($string = null)
     {
+        if ($string != null) {
+            return $this->_return(
+                strtoupper($string)
+            );
+        }
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -244,14 +263,22 @@ class String extends stdClass
         return $this->_return(substr($this->_string, $start, $length));
     }
     /**
-     * Function shuffle wrapper for str_shuffle
+     * Function shuffle wrapper for str_shuffle optional parameter
+     * returned as shuffle or set the value of the internal if
+     * setmutable is true.
      *
-     * @param nothing
+     * @param string optional
      *
      * @return string
      */
-    public function shuffle()
+    public function shuffle($string = null)
     {
+        if ($string !=null) {
+             return $this->_return(
+                 str_shuffle($string)
+             );
+        }
+
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -262,15 +289,25 @@ class String extends stdClass
         );
     }
     /**
-     * Function reverse wrapper for strrev
+     * Function reverse wrapper for strrev  optional parameter
+     * returned as reversed or set the value of the internal if
+     * setmutable is true.
      *
      *
-     * @param nothing
+     * @param string optional
      *
      * @return string
      */
-    public function reverse()
+    public function reverse($string = null)
     {
+        if ($string !=null) {
+             return $this->_return(
+                 strrev($string)
+             );
+        }
+
+
+         
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -281,15 +318,25 @@ class String extends stdClass
         );
     }
     /**
-     * Function lc wrapper for strolower
+     * Function lc wrapper for strolower parameter can be passed and
+     * returned as lowercase or set the value of the internal if
+     * setmutable is true.
      *
      *
-     * @param nothing
+     * @param string optional
      *
      * @return string
      */
-    public function lc()
+    public function lc($string = null)
     {
+        if ($string != null) {
+            return $this->_return(
+                strtolower($this->_string)
+            );
+
+        }
+    
+         
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -379,21 +426,32 @@ class String extends stdClass
         return intval($this->_string);
     }
     /**
-     *  Function length Wrapper for strlen
+     * Function length Wrapper for strlen
+     * if optional parameter is set returns the length of parameter
+     *
+     * @param string optional
      */
-    public function length()
+    public function length($string = null)
     {
+        if ($string !=null) {
+              return strlen($string);
+        }
+        
         return strlen($this->_string);
     }
     /**
      * Function wordCount wrapper for str_word_count
+     * if optional parameter is set returns the word of parameter
      *
      *
-     * @param nothing
+     * @param string optional
      * @return int
      */
-    public function wordCount()
+    public function wordCount($string = null)
     {
+        if ($string !=null) {
+            return str_word_count($string);
+        }
         if ($this->_string == null) {
             throw new Exception('Empty string');
         }
@@ -515,6 +573,9 @@ class String extends stdClass
      */
     private function _return($string)
     {
+        if ($this->_mutable == true) {
+            $this->_string=$string;
+        }
         if ($this->_stringmode == false) {
             return $string;
         }

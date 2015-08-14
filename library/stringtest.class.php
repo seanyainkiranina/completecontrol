@@ -31,7 +31,7 @@ class StringTest extends PHPUnit_Framework_TestCase
 
          $this->assertEquals("Test2", $string2->get());
 
-        }
+     }
 
         public function testConcat()
         {
@@ -41,6 +41,12 @@ class StringTest extends PHPUnit_Framework_TestCase
             $string->concat(" Test4");
 
             $this->assertEquals("Test3 Test4", $string->concat(" Test4"));
+            
+            $string->setMutable(true);
+
+            $this->assertEquals("Test3 Test4", $string->concat(" Test4"));
+
+            $this->assertEquals("Test3 Test4 Test5", $string->concat(" Test5"));
 
 
         }
@@ -66,6 +72,8 @@ class StringTest extends PHPUnit_Framework_TestCase
             $string = new String("Test6");
 
             $this->assertEquals("TEST6", $string->uc());
+
+            $this->assertEquals("TEST7", $string->uc("test7"));
 
 
         }
