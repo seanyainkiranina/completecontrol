@@ -1,9 +1,8 @@
 # completecontrol
-<h4>completecontrol is the name of a Clash song and this project. </h4>
+<h4>completecontrol is the name of this project. </h4>
 
-<p>This is an attempt to answer the question, what don't you like about php?</p>
+<p>A library and collection of helpers to become part of infinity-express the other project I have on github.</p>
 
-<p>I have heard that question six times from six different people.</p>
 
-<p>A library to try and fix whats wrong.</p>
+
 

@@ -127,6 +127,34 @@ class String extends stdClass
 
     }
     /**
+     * Function random generate a random string .
+     *
+     * @param int length of string [optional default 10]
+     *
+     * @return string
+     *
+     */
+    public function random($length = 10)
+    {
+        $base=str_shuffle(md5(microtime()));
+
+        while (strlen($base)<(2*$length)) {
+            $base .=str_shuffle(md5(microtime()));
+        }
+
+        $baselength=strlen($base);
+     
+        $returnString="";
+
+        while (strlen($returnString)<$length) {
+            $returnString .=$base[rand(0, $baselength-1)];
+        }
+
+ 
+        return $this->_return(str_shuffle($returnString));
+
+    }
+    /**
      * Function setMutable sets changablity of the internal string.
      * Setting to true causes each function to call its internal string
      *
