@@ -13,6 +13,9 @@
 
 require('decimal.class.php');
 
+
+/*xxxx */
+
 class DecimalTest extends PHPUnit_Framework_TestCase
 {
      public function testConstructAndGetAndSet()
