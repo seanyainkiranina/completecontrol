@@ -11,11 +11,8 @@
 */
 class ArrayHelper extends stdClass
 {
-<<<<<<< HEAD
+
     private $_value = 7;
-=======
-    private $_value = 5;
->>>>>>> 2fb71ff181cd99432cf21ed6637659c6526bfa48
     private $_objectid = '0715221d-59e8-9689-434093851da8';
     private $_mutable = false;
     /**
