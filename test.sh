@@ -5,6 +5,12 @@
 # if there are no unit or php test errors.
 ##########################################################################
 
+        if [ ! -z "$1" ]
+         then 
+            git stash save "$1"
+            git pull
+            git stash pop
+        fi
 # Test to make sure php is in path
 php=`which php`
 if [  -z $php ]
@@ -12,6 +18,7 @@ then
     echo "Cannot find php"
     exit
 fi
+
 
 # Test to make sure phpunit is in path
 phpunit=`which phpunit`
