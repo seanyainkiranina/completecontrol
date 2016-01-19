@@ -127,7 +127,7 @@ class String extends stdClass
 
     }
     /**
-     * Function random generate a random string .
+     * Function random generate a random string.
      *
      * @param int length of string [optional default 10]
      *
@@ -136,14 +136,21 @@ class String extends stdClass
      */
     public function random($length = 10)
     {
+        if (!is_numeric($length)) {
+            throw new Exception('Non numeric parameter');
+        }
+
         $base=str_shuffle(md5(microtime()));
 
-        while (strlen($base)<(2*$length)) {
+        while (strlen($base)<(pow($length, 2))) {
             $base .=str_shuffle(md5(microtime()));
         }
 
-        $baselength=strlen($base);
      
+        $base=str_shuffle($base);
+     
+        $baselength=strlen($base);
+
         $returnString="";
 
         while (strlen($returnString)<$length) {
@@ -444,13 +451,16 @@ class String extends stdClass
     }
     /**
      * Function toInteger wrapper for intval
+     * optional parameter returns as integer
      *
-     *
-     * @param none
+     * @param string optional
      * @return int
      */
-    public function toInteger()
+    public function toInteger($string = null)
     {
+        if ($string !=null) {
+            return intval($string);
+        }
         return intval($this->_string);
     }
     /**
@@ -486,6 +496,29 @@ class String extends stdClass
         
         return str_word_count($this->_string);
     }
+    /**
+     *  Guid generator
+     *  if mutable is set sets internal string
+     */
+    public function guid()
+    {
+        if (function_exists('com_create_guid')) {
+                return $this->_return(trim(
+                    com_create_guid(),
+                    '{}'
+                ));
+        }
+
+              return $this->_return(
+                  $this->random(8) ."-".
+                  $this->random(4) ."-".
+                  $this->random(4) ."-".
+                  $this->random(4) ."-".
+                  $this->random(12)
+              );
+         
+    }
+
     /**
      *  Wrapper for addcslashes and addslashes
      *  Quote string with slashes.
