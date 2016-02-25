@@ -76,7 +76,7 @@ class Decimal extends stdClass
     }
     /**
      * Function setMutable sets changablity of the internal string.
-     * Setting to true causes each function to call its internal string
+     * Setting to TRUE causes each function to call its internal string
      *
      *
      * @param bool
@@ -99,7 +99,7 @@ class Decimal extends stdClass
     public function fromSerial($serialObject)
     {
 
-              return unserializer($serialObject);
+              return unserialize($serialObject);
     }
     /**
      * Function returns xml serialized version of the object.
@@ -110,7 +110,7 @@ class Decimal extends stdClass
     public function toSerial()
     {
 
-        return serialize($this);
+        return serializer($this);
     }
     /**
      * Function setReturnMode changes returns to decimal objects rather
@@ -137,12 +137,12 @@ class Decimal extends stdClass
      */
     private function _return($parameter)
     {
-        if ($this->_mutable == true) {
+        if ($this->_mutable === true) {
             $this->_value = $parameter;
         }
         
 
-        if ($this->_decimalmode == false) {
+        if ($this->_decimalmode === false) {
             return $parameter;
         }
         

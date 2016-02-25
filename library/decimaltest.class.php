@@ -41,7 +41,7 @@ class DecimalTest extends PHPUnit_Framework_TestCase
          $this->assertEquals(2, $decimal->get());
 
 
-        }
+     }
         public function testAdd()
         {
 
@@ -72,6 +72,15 @@ class DecimalTest extends PHPUnit_Framework_TestCase
             $decimal2 = new Decimal(3);
 
             $this->assertEquals(0, $decimal->subtract($decimal2));
+
+        }
+        public function testPowerException()
+        {
+
+            $decimal = new Decimal(3);
+            $this->setExpectedException('Exception');
+            $decimal->power();
+    
 
         }
         public function testPowerAndDivide()

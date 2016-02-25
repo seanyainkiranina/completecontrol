@@ -53,15 +53,21 @@ FILES=`ls ./library/*test.class.php`
      do
         main_php_file=`echo $file | sed 's/test//g'`
         error=`php --syntax-check $main_php_file 2>&1 >/dev/null | grep -ic 'error'`
-
               if [ $error -ne 0 ]
               then
                     BADFILES="$BADFILES $file"
               else
-                    error=`phpunit --verbose $file 2>&1 | grep -ic 'fail'`
+                    error=`phpunit --verbose $file 2>&1 | grep -ic 'fail\|error'`
                     if [ $error -ne 0 ]
                     then
                         BADFILES="$BADFILES $file"
+              	    else
+                    	error=`php $main_php_file 2>&1 | grep -ic 'error'`
+                    	if [ $error -ne 0 ]
+                    	then
+                        	BADFILES="$BADFILES $file"
+		
+                    	fi 
                     fi 
               fi 
 
