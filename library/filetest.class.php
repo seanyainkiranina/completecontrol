@@ -23,7 +23,7 @@ class FileTest extends PHPUnit_Framework_TestCase
          $this->assertEquals('root', $file->owner());
      
 
-     }
+        }
         public function testWrite()
         {
             $file = new File('/tmp/test');
