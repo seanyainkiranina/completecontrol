@@ -99,7 +99,7 @@ class ArrayHelper extends stdClass
     public function fromSerial($serialObject)
     {
 
-              return unserializer($serialObject);
+              return unserialize($serialObject);
     }
     /**
      * Function returns xml serialized version of the object.
@@ -425,8 +425,6 @@ class ArrayHelper extends stdClass
     }
     /**
      * Function push element on to the front of an array
-     * if first arguement is an array and ther are more then one parameter
-     * remaining arguments are pushed to first arguement
      *
      * @param mixed
      *
@@ -435,29 +433,20 @@ class ArrayHelper extends stdClass
     public function unshift(...$values)
     {
         $temparray=$this->_value;
-        if ((count($values))>1) {
-            if (is_array($values[0])) {
-                $temparray=array_unshift($values);
-            }
-        }
         foreach ($values as $value) {
-            $test_count=count($temparray);
-
-            if (($test_count+1) != $tested_count) {
-                 throw new Exception('Value could not be pushed');
-            }
+               array_unshift($temparray, $value);
         }
 
         if ($this->_mutable == true) {
-            $this->value = $temparray;
+            $this->_value = $temparray;
         }
 
         return $temparray;
     }
     /**
      * Function push element on to the end of array
-     * if first arguement is an array and ther are more then one parameter
-     * remaining arguments are pushed to first arguement
+     * if first argument is an array and ther are more then one parameter
+     * remaining arguments are pushed to first argument
      *
      * @param mixed
      *

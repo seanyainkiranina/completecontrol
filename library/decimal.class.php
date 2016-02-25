@@ -38,7 +38,7 @@ class Decimal extends stdClass
         return $this->_objectid;
     }
     /**
-     * Function overload to create dyanmic function
+     * Function overload to create dynamic function
      *
      * @param array
      *
@@ -110,7 +110,7 @@ class Decimal extends stdClass
     public function toSerial()
     {
 
-        return serializer($this);
+        return serialize($this);
     }
     /**
      * Function setReturnMode changes returns to decimal objects rather

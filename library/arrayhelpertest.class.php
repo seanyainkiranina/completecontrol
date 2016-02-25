@@ -29,12 +29,11 @@ class ArrayHelperTest extends PHPUnit_Framework_TestCase
          $this->assertEquals(1, $ah->shift());
          $this->assertEquals(1, $ah->shift());
   
-        $this->setMutable(true);
+        $ah->setMutable(true);
 
          $this->assertEquals(1, $ah->shift());
          $this->assertEquals(2, $ah->shift());
-         $ah->unshift(2);
-         $ah->unshift(1);
+         $ah->unshift(2, 1);
          $this->assertEquals(1, $ah->shift());
 
 
