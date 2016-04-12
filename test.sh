@@ -5,12 +5,11 @@
 # if there are no unit or php test errors.
 ##########################################################################
 
-        if [ ! -z "$1" ]
-         then 
-            git stash save "$1"
-            git pull
-            git stash pop
-        fi
+if [ ! -z "$1" ]
+then 
+	cd ./library/
+        git commit -ma "$1"
+fi
 # Test to make sure php is in path
 php=`which php`
 if [  -z $php ]
