@@ -27,19 +27,40 @@ then
     exit
 fi
 
+# Test to make sure phpmd is in path
+phpmd=`which phpmd`
+if [  -z $phpmd ]
+then
+    echo "Cannot find phpmd"
+    exit
+fi
+
+md=`$phpmd ./library/ text design naming unusedcode cleancode`
+
+
+mdlines=`echo $md | wc -l`
+
+if [ $mdlines -ne 0 ]
+then
+	echo "Ignore ...variadic.. errors "
+	echo $md
+fi
+
 # Test to make sure phpcbf is in path
 # if its not we just don't do the PSR2
 phpcbf=`which phpcbf`
 
-FILES=`ls ./library/*.php`
-
 if [ ! -z $phpcbf ]
 then
-     for file in $FILES
-     do
-         phpcbf -w --standard=PSR2 --no-patch $file 2>&1 >/dev/null
-    done
+      phpcbf --report=diff -vv -w --standard=PSR2 --no-patch ./library/ 
 fi
+
+phpcs=`which phpcs`
+if [ ! -z $phpcs ]
+then
+	phpcs --standard=PSR2 ./library/ | less
+fi
+
 
 # No errors so far
 errors=0
