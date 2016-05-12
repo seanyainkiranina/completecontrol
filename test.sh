@@ -7,8 +7,8 @@
 
 if [ ! -z "$1" ]
 then 
-	cd ./library/
-        git commit -ma "$1"
+        git add .
+        git commit -m "$1"
 fi
 # Test to make sure php is in path
 php=`which php`
