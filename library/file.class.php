@@ -1,4 +1,6 @@
 <?php
+namespace completecontrol;
+
 /*
  * This file is part of completecontrol
  *
@@ -9,34 +11,34 @@
  * Feel free to edit as you please, and have fun.
  *
 */
-class File extends stdClass
+class File extends \stdClass
 {
-    private $_value = null;
-    private $_objectid = '0715221e-59e8-9589-434093851da8';
-    private $_filemode = false;
-    private $_array = array();
+    private $value = null;
+    private $objectid = '0715221e-59e8-9589-434093851da8';
+    private $filemode = false;
+    private $array = array();
 
-    private $_isDir = false;
-    private $_isExecutable = false;
-    private $_isFile = false;
-    private $_isLink = false;
-    private $_isReadable = false;
-    private $_isWriteable = false;
-    private $_isUploadedFile = false;
-    private $_exists = false;
+    private $isDir = false;
+    private $isExecutable = false;
+    private $isFile = false;
+    private $isLink = false;
+    private $isReadable = false;
+    private $isWriteable = false;
+    private $isUploadedFile = false;
+    private $exists = false;
 
-    private $_basename = null;
-    private $_dirname = null;
-    private $_type = null;
-    private $_owner = null;
+    private $basename = null;
+    private $dirname = null;
+    private $type = null;
+    private $owner = null;
 
-    private $_atime = null;
-    private $_ctime = null;
-    private $_mtime = null;
-    private $_size = null;
+    private $atime = null;
+    private $ctime = null;
+    private $mtime = null;
+    private $size = null;
 
 
-    private $_saved_size =null;
+    private $savedsize =null;
 
 
     /**
@@ -49,8 +51,8 @@ class File extends stdClass
      */
     public function __construct($parameter = null)
     {
-        $this->_value = $this->_toFile($parameter);
-        $this->_init();
+        $this->value = $this->toFile($parameter);
+        $this->init();
     }
     /**
      * Function getObjectID unique id to this class.
@@ -60,7 +62,7 @@ class File extends stdClass
      */
     public function getObjectID()
     {
-        return $this->_objectid;
+        return $this->objectid;
     }
     /**
      * Function overload to create dyanmic function
@@ -72,7 +74,7 @@ class File extends stdClass
     public function __call($function, $params)
     {
         $method = $this->$function->bindto($this);
-        return call_user_func_array($method, $params);
+        return calluserfuncarray($method, $params);
     }
     /**
      * Readonly property test if directory
@@ -81,8 +83,8 @@ class File extends stdClass
      */
     public function isDir()
     {
-        $this->_init();
-          return $this->_isDir;
+        $this->init();
+          return $this->isDir;
     }
     /**
      * Readonly property test if executable
@@ -91,8 +93,8 @@ class File extends stdClass
      */
     public function isExecutable()
     {
-        $this->_init();
-         return $this->_isExecutable;
+        $this->init();
+         return $this->isExecutable;
     }
     /**
      * Readonly property test if readable
@@ -101,8 +103,8 @@ class File extends stdClass
      */
     public function isReadable()
     {
-        $this->_init();
-          return $this->_isReadable;
+        $this->init();
+          return $this->isReadable;
     }
     /**
      * Readonly property test if writeable
@@ -111,8 +113,8 @@ class File extends stdClass
      */
     public function isWriteable()
     {
-        $this->_init();
-         return $this->_isWriteable;
+        $this->init();
+         return $this->isWriteable;
     }
     /**
      * Readonly property test if uploadedfile
@@ -121,8 +123,8 @@ class File extends stdClass
      */
     public function isUploadedFile()
     {
-        $this->_init();
-        return $this->_isUploadedFile;
+        $this->init();
+        return $this->isUploadedFile;
     }
     /**
      * Readonly property file size
@@ -131,8 +133,8 @@ class File extends stdClass
      */
     public function size()
     {
-        $this->_init();
-        return $this->_size;
+        $this->init();
+        return $this->size;
     }
     /**
      * Function get
@@ -145,7 +147,7 @@ class File extends stdClass
      */
     public function get()
     {
-        return $this->_value;
+        return $this->value;
     }
     /**
      * Function set sets the internal string.
@@ -157,8 +159,8 @@ class File extends stdClass
      */
     public function set($parameter)
     {
-        $this->_value = $this->_toFile($parameter);
-        $this->_init();
+        $this->value = $this->toFile($parameter);
+        $this->init();
     }
     /**
      * Function setReturnMode changes returns File object rather
@@ -171,9 +173,9 @@ class File extends stdClass
     public function setReturnMode($mode)
     {
         if (!is_bool($mode)) {
-            throw new Exception('Non boolean parameter');
+            throw new \Exception('Non boolean parameter');
         }
-        $this->_filemode = $mode;
+        $this->filemode = $mode;
     }
     /**
      * Function isFile returns true if file exists
@@ -181,7 +183,7 @@ class File extends stdClass
      */
     public function isFile()
     {
-        return $this->_isFile;
+        return $this->isFile;
     }
     /**
      * Function toArray return array of file
@@ -192,19 +194,19 @@ class File extends stdClass
      */
     public function toArray()
     {
-        if ($this->_value==null) {
-            throw new Exception("Cannot determine file name");
+        if ($this->value==null) {
+            throw new \Exception("Cannot determine file name");
         }
 
-        if ($this->_exists==false) {
-            throw new Exception("File does not exist");
+        if ($this->exists==false) {
+            throw new \Exception("File does not exist");
         }
 
-        if ($this->_isReadable==false) {
-            throw new Exception("File is not readable");
+        if ($this->isReadable==false) {
+            throw new \Exception("File is not readable");
         }
 
-        return file($this->_value);
+        return file($this->value);
 
     }
     /**
@@ -239,35 +241,35 @@ class File extends stdClass
      */
     public function touch($time = null, $atime = null)
     {
-        if ($this->_value==null) {
-            throw new Exception("Cannot determine file name");
+        if ($this->value==null) {
+            throw new \Exception("Cannot determine file name");
         }
 
         if ($time==null) {
-            return touch($this->_value);
+            return touch($this->value);
         }
 
         if ($atime==null) {
-            return touch($this->_value, $time);
+            return touch($this->value, $time);
         }
 
-        return touch($this->_value, $time, $atime);
+        return touch($this->value, $time, $atime);
     }
     /**
-     * Function disk_free_space
+     * Function diskfreespace
      *
      * @throws mixed
      *
      * @return float
      */
-    public function disk_free_space()
+    public function diskfreespace()
     {
-        if ($this->_dirname == null) {
-            throw new Exception("Cannot determine directory");
+        if ($this->dirname == null) {
+            throw new \Exception("Cannot determine directory");
         }
 
 
-        return disk_free_space($this->_dirname);
+        return diskfreespace($this->dirname);
 
     }
     /**
@@ -280,21 +282,21 @@ class File extends stdClass
      */
     public function delete()
     {
-        if ($this->_exists==false) {
-            throw new Exception("File does not exist");
+        if ($this->exists==false) {
+            throw new \Exception("File does not exist");
         }
-        if ($this->_isReadable==false) {
-            throw new Exception("File is not readable");
+        if ($this->isReadable==false) {
+            throw new \Exception("File is not readable");
         }
-        if ($this->_isWriteable==false) {
-            throw new Exception("File is not writeable");
-        }
-
-        if (!unlink($this->_value)) {
-            throw new Exception("File could not be deleted");
+        if ($this->isWriteable==false) {
+            throw new \Exception("File is not writeable");
         }
 
-        $this->_init();
+        if (!unlink($this->value)) {
+            throw new \Exception("File could not be deleted");
+        }
+
+        $this->init();
 
         return true;
 
@@ -309,16 +311,16 @@ class File extends stdClass
      */
     public function copy($target)
     {
-        if ($this->_exists==false) {
-            throw new Exception("File does not exist");
+        if ($this->exists==false) {
+            throw new \Exception("File does not exist");
         }
 
-        if ($this->_isReadable==false) {
-            throw new Exception("File is not readable");
+        if ($this->isReadable==false) {
+            throw new \Exception("File is not readable");
         }
 
-        if (!copy($this->_value, $target)) {
-            throw new Exception("File could not be copied");
+        if (!copy($this->value, $target)) {
+            throw new \Exception("File could not be copied");
         }
 
         return true;
@@ -336,36 +338,36 @@ class File extends stdClass
      */
     public function group($newgroup = null)
     {
-        if ($this->_exists==false) {
-            throw new Exception("File does not exist");
+        if ($this->exists==false) {
+            throw new \Exception("File does not exist");
         }
         
-        if ($this->_isReadable==false) {
-            throw new Exception("File is not readable");
+        if ($this->isReadable==false) {
+            throw new \Exception("File is not readable");
         }
 
-        $groupid= filegroup($this->_value);
+        $groupid= filegroup($this->value);
 
         if ($groupid === false) {
-            throw new Exception("Error getting group id");
+            throw new \Exception("Error getting group id");
         }
 
-        $group=posix_getgrgid($groupid);
+        $group=posixgetgrgid($groupid);
 
-        if (!is_array($group)) {
-            throw new Exception("Error getting group id");
+        if (!isarray($group)) {
+            throw new \Exception("Error getting group id");
         }
 
         if ($newgroup==null) {
             return $group['name'];
         }
 
-        if ($this->_isWriteable == false) {
-            throw new Exception("File is not writeable");
+        if ($this->isWriteable == false) {
+            throw new \Exception("File is not writeable");
         }
 
-        if (chgrp($this->_value, $newgroup)===false) {
-            throw new Exception("Unable to change File group");
+        if (chgrp($this->value, $newgroup)===false) {
+            throw new \Exception("Unable to change File group");
         }
 
         clearstatcache();
@@ -382,36 +384,36 @@ class File extends stdClass
      */
     public function owner($newowner = null)
     {
-        if ($this->_exists==false) {
-            throw new Exception("File does not exist");
+        if ($this->exists==false) {
+            throw new \Exception("File does not exist");
         }
         
-        if ($this->_isReadable==false) {
-            throw new Exception("File is not readable");
+        if ($this->isReadable==false) {
+            throw new \Exception("File is not readable");
         }
 
-        $userid= fileowner($this->_value);
+        $userid= fileowner($this->value);
 
         if ($userid === false) {
-            throw new Exception("Could not get file owner");
+            throw new \Exception("Could not get file owner");
         }
 
         $user=posix_getpwuid($userid);
 
         if (!is_array($user)) {
-            throw new Exception("Could not get file owner");
+            throw new \Exception("Could not get file owner");
         }
 
         if ($newowner == null) {
              return $user['name'];
         }
 
-        if ($this->_isWriteable == false) {
-            throw new Exception("File is not writeable");
+        if ($this->isWriteable == false) {
+            throw new \Exception("File is not writeable");
         }
 
-        if (chown($this->_value, $newowner)===false) {
-            throw new Exception("Could not set file owner");
+        if (chown($this->value, $newowner)===false) {
+            throw new \Exception("Could not set file owner");
         }
 
         clearstatcache();
@@ -428,15 +430,15 @@ class File extends stdClass
      */
     public function toString()
     {
-        if ($this->_exists==false) {
-            throw new Exception("File does not exist");
+        if ($this->exists==false) {
+            throw new \Exception("File does not exist");
         }
 
-        if ($this->_isReadable==false) {
-            throw new Exception("File is not readable");
+        if ($this->isReadable==false) {
+            throw new \Exception("File is not readable");
         }
 
-        return file_get_contents($this->_value);
+        return file_get_contents($this->value);
 
     }
     /**
@@ -450,7 +452,7 @@ class File extends stdClass
      */
     public function putString($content)
     {
-        return file_put_contents($this->_value, $content);
+        return file_put_contents($this->value, $content);
 
     }
     /**
@@ -464,10 +466,10 @@ class File extends stdClass
      */
     public function append($text)
     {
-        $fp = fopen($this->_value, "a+");
+        $fp = fopen($this->value, "a+");
 
         if (flock($fp, LOCK_EX)===false) {
-            throw new Exception("Unable to lock file");
+            throw new \Exception("Unable to lock file");
         }
             fwrite($fp, $text);
 
@@ -477,7 +479,7 @@ class File extends stdClass
 
             fclose($fp);
 
-           $this->_init();
+           $this->init();
 
            return true;
     }
@@ -492,33 +494,33 @@ class File extends stdClass
 
         $mode=intval($mode);
 
-        if ($this->_exists==false) {
-            throw new Exception("File does not exist");
+        if ($this->exists==false) {
+            throw new \Exception("File does not exist");
         }
 
-        if ($this->_isWriteable == false) {
-            throw new Exception("File is not writeable");
+        if ($this->isWriteable == false) {
+            throw new \Exception("File is not writeable");
         }
 
-        $valid_mode=false;
+        $validmode=false;
 
         if ($mode>777) {
-            throw new Exception("Bad file mode");
+            throw new \Exception("Bad file mode");
         }
 
         if ($mode<0) {
-            throw new Exception("Bad file mode");
+            throw new \Exception("Bad file mode");
         }
 
-        $characters=str_split($mode);
+        $characters=strsplit($mode);
 
         foreach ($characters as $character) {
             if (intval($character)>7) {
-                throw new Exception("Bad file mode");
+                throw new \Exception("Bad file mode");
             }
         }
 
-        return chmod($this->_value, $mode);
+        return chmod($this->value, $mode);
 
     }
     /**
@@ -528,102 +530,100 @@ class File extends stdClass
      */
     public function &lines()
     {
-        if ($this->_value==null) {
-            throw new Exception("Bad file mode");
+        if ($this->value==null) {
+            throw new \Exception("Bad file mode");
         }
        
-        if ($this->_isReadable ==false) {
-            throw new Exception("File is not readable");
+        if ($this->isReadable ==false) {
+            throw new \Exception("File is not readable");
         }
      
-        $this->_init();
+        $this->init();
 
-        if ($this->_saved_size != $this->_size) {
-            $this->_array = file($this->_value);
-            $this->_init();
-            $this->_saved_size = $this->_size;
+        if ($this->savedsize != $this->size) {
+            $this->array = file($this->value);
+            $this->init();
+            $this->savedsize = $this->size;
         }
 
-        foreach ($this->_array as $line) {
+        foreach ($this->array as $line) {
             yield $line;
-
         }
 
 
     }
 
     /**
-     * Function _init set all internal properties
+     * Function init set all internal properties
      *
      * @param string
      *
      *
      */
-    private function _init()
+    private function init()
     {
-        $parameter=$this->_value;
-        $this->_exists = file_exists($parameter);
-        $this->_basename = basename($parameter);
-        $this->_dirname = dirname($parameter);
+        $parameter=$this->value;
+        $this->exists = file_exists($parameter);
+        $this->basename = basename($parameter);
+        $this->dirname = dirname($parameter);
 
-        if ($this->_exists==true) {
-            $this->_isDir = is_dir($parameter);
-            $this->_isExecutable = is_executable($parameter);
-            $this->_isFile = is_file($parameter);
-            $this->_isLink = is_link($parameter);
-            $this->_isReadable = is_readable($parameter);
-            $this->_isWriteable = is_writeable($parameter);
-            $this->_isUploadedFile = is_uploaded_file($parameter);
+        if ($this->exists==true) {
+            $this->isDir = is_dir($parameter);
+            $this->isExecutable = is_executable($parameter);
+            $this->isFile = is_file($parameter);
+            $this->isLink = is_link($parameter);
+            $this->isReadable = is_readable($parameter);
+            $this->isWriteable = is_writeable($parameter);
+            $this->isUploadedFile = is_uploaded_file($parameter);
 
-            $this->_atime = fileatime($parameter);
-            $this->_ctime = filectime($parameter);
-            $this->_mtime = filemtime($parameter);
-            $this->_size  = filesize($parameter);
+            $this->atime = fileatime($parameter);
+            $this->ctime = filectime($parameter);
+            $this->mtime = filemtime($parameter);
+            $this->size  = filesize($parameter);
 
-            $this->_type = filetype($parameter);
-            $this->_owner = fileowner($parameter);
+            $this->type = filetype($parameter);
+            $this->owner = fileowner($parameter);
 
             return;
-
         }
-            $this->_isDir = false;
-            $this->_isExecutable = false;
-            $this->_isFile = false;
-            $this->_isLink = false;
-            $this->_isReadable = false;
-            $this->_isWriteable = false;
-            $this->_isUploadedFile = false;
+            $this->isDir = false;
+            $this->isExecutable = false;
+            $this->isFile = false;
+            $this->isLink = false;
+            $this->isReadable = false;
+            $this->isWriteable = false;
+            $this->isUploadedFile = false;
 
-            $this->_atime = null;
-            $this->_ctime = null;
-            $this->_mtime = null;
-            $this->_size = null;
-            $this->_type = null;
-            $this->_owner = null;
+            $this->atime = null;
+            $this->ctime = null;
+            $this->mtime = null;
+            $this->size = null;
+            $this->type = null;
+            $this->owner = null;
 
     }
     /**
-     * Function _return
+     * Function return
      *
      * @param float
      *
      * @return mixed
      */
-    private function _return($parameter)
+    private function returnFile($parameter)
     {
-        if ($this->_filemode == false) {
+        if ($this->filemode == false) {
             return $parameter;
         }
         return new File($parameter);
     }
     /**
-     * Function _toFile
+     * Function toFile
      *
      * @param mixed
      *
      * @return float
      */
-    private function _toFile($parameter)
+    private function toFile($parameter)
     {
         if (is_file($parameter)) {
             return $parameter;
@@ -631,7 +631,7 @@ class File extends stdClass
         
         if (is_object($parameter)) {
             if (method_exists($parameter, "getObjectID")) {
-                if ($this->_objectid == $parameter->getObjectID()) {
+                if ($this->objectid == $parameter->getObjectID()) {
                     return $parameter->get();
                 }
             }
@@ -640,6 +640,6 @@ class File extends stdClass
             return $parameter;
         }
 
-        throw new Exception('Invalid Parameter');
+        throw new \Exception('Invalid Parameter');
     }
 }

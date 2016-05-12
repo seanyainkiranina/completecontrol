@@ -1,4 +1,6 @@
 <?php
+namespace completecontrol;
+
 /*
  * This file is part of completecontrol
  *
@@ -11,13 +13,13 @@
 */
 class ScriptHelper extends stdClass
 {
-    private $_value = null;
-    private $_objectid = '0915223e-59e8-9689-434093851da8';
+    private $value = null;
+    private $objectid = '0915223e-59e8-9689-434093851da8';
 
-    private $_ru_nswap = null;
-    private $_ru_majflt = null;
-    private $_ru_utime = null;
-    private $_microtime =null;
+    private $runswap = null;
+    private $rumajflt = null;
+    private $ruutime = null;
+    private $microtime =null;
 
 
 
@@ -29,29 +31,29 @@ class ScriptHelper extends stdClass
      */
     public function __construct()
     {
-              $this->_usage();
-              $this->_microtime=microtime();
+              $this->usage();
+              $this->microtime=microtime();
     }
-    public function __destruct()
+    public function destruct()
     {
-              $this->_usage();
-              $this->_microtime=microtime();
+              $this->usage();
+              $this->microtime=microtime();
 
     }
     /**
      * Accessor to swap on unset reloads the data.
      */
-    public function __get($name)
+    public function get($name)
     {
-        switch($name){
+        switch ($name) {
             case "swap":
-                return $this->_ru_nswap;
+                return $this->runswap;
             case "majflt":
-                return $this->_ru_majflt;
+                return $this->rumajflt;
             case "utime":
-                return $this->_ru_utime;
+                return $this->ruutime;
             case "microtime":
-                return $this->_microtime;
+                return $this->microtime;
             case "duplicate":
                 return $this;
         }
@@ -64,7 +66,7 @@ class ScriptHelper extends stdClass
      */
     public function getObjectID()
     {
-        return $this->_objectid;
+        return $this->objectid;
     }
     /**
      * Function overload to create dyanmic function
@@ -73,7 +75,7 @@ class ScriptHelper extends stdClass
      *
      * @return mixed
      */
-    public function __call($function, $params)
+    public function call($function, $params)
     {
         $method = $this->$function->bindto($this);
         return call_user_func_array($method, $params);
@@ -117,13 +119,13 @@ class ScriptHelper extends stdClass
      *
      * @return nothing
      */
-    private function _usage()
+    private function usage()
     {
          $data = getrusage();
-         print_r($data);
-         $this->_ru_nswap = $data['ru_nswap'];
-         $this->_ru_majflt = $data['ru_majflt'];
-         $this->_ru_utime = $data['ru_utime.tv_sec'];
+         printr($data);
+         $this->runswap = $data['runswap'];
+         $this->rumajflt = $data['rumajflt'];
+         $this->ruutime = $data['ruutime.tvsec'];
         
     }
 }

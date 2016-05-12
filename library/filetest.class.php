@@ -1,4 +1,5 @@
 <?php
+namespace completecontrol;
 
 /*
  * This file is part of completecontrol
@@ -11,42 +12,41 @@
  *
  */
 
-require('file.class.php');
+require 'file.class.php';
 
-class FileTest extends PHPUnit_Framework_TestCase
+class FileTest extends \PHPUnit_Framework_TestCase
 {
-     public function testConstructAndGetAndSet()
-     {
+    public function testConstructAndGetAndSet()
+    {
 
-         $file= new File('/etc/passwd');
+        $file= new File('/etc/passwd');
 
-         $this->assertEquals('root', $file->owner());
+        $this->assertEquals('root', $file->owner());
      
 
+    }
+    public function testWrite()
+    {
+        $file = new File('/tmp/test');
+
+        $this->assertEquals(true, $file->append("test\n"));
+        $this->assertEquals(true, $file->append("test\n"));
+        $this->assertEquals(true, $file->copy('/tmp/test2'));
+        $this->assertEquals(true, $file->delete());
+
+        $file = new File('/tmp/test2');
+
+        $linecount=0;
+
+        foreach ($file->lines() as $line) {
+            $linecount=$linecount+1;
         }
-        public function testWrite()
-        {
-            $file = new File('/tmp/test');
 
-            $this->assertEquals(true, $file->append("test\n"));
-            $this->assertEquals(true, $file->append("test\n"));
-            $this->assertEquals(true, $file->copy('/tmp/test2'));
-            $this->assertEquals(true, $file->delete());
-
-            $file = new File('/tmp/test2');
-
-            $linecount=0;
-
-            foreach ($file->lines() as $line) {
-                $linecount=$linecount+1;
-
-            }
-
-            $array=$file->toArray();
-            $this->assertEquals(2, count($array));
-            $this->assertEquals(2, $linecount);
-            $this->assertEquals(true, $file->delete());
-            $this->assertEquals(false, $file->isFile());
+        $array=$file->toArray();
+        $this->assertEquals(2, count($array));
+        $this->assertEquals(2, $linecount);
+        $this->assertEquals(true, $file->delete());
+        $this->assertEquals(false, $file->isFile());
      
-        }
+    }
 }

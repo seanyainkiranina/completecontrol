@@ -1,5 +1,7 @@
 <?php
-/*
+namespace completecontrol;
+
+/**
  * This file is part of completecontrol
  *
  *
@@ -9,15 +11,15 @@
  * Feel free to edit as you please, and have fun.
  *
 */
-class String extends stdClass
+class String extends \stdClass
 {
-    private $_string = null;
-    private $_array = null;
-    private $_token = null;
-    private $_position_in_string = 0;
-    private $_mutable = false;
-    private $_objectid = '0715221c-59e8-9589-434093851da8';
-    private $_stringmode = false;
+    private $string = null;
+    private $array = null;
+    private $token = null;
+    private $positioninstring = 0;
+    private $mutable = false;
+    private $objectid = '0715221c-59e8-9589-434093851da8';
+    private $stringmode = false;
     /**
      * Function constructor
      *
@@ -27,7 +29,7 @@ class String extends stdClass
      */
     public function __construct($string = null)
     {
-        $this->_string = $this->_toString($string);
+        $this->string = $this->toString($string);
     }
     /**
      * Function set return mode
@@ -36,7 +38,7 @@ class String extends stdClass
      */
     public function setReturnMode($bool)
     {
-        $this->_stringmode = $bool;
+        $this->stringmode = $bool;
     }
     /**
      * Function getObjectID unique id to this class.
@@ -46,7 +48,7 @@ class String extends stdClass
      */
     public function getObjectID()
     {
-        return $this->_objectid;
+        return $this->objectid;
     }
     /**
      * Function overload to create dyanmic function
@@ -72,11 +74,11 @@ class String extends stdClass
      */
     public function get()
     {
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
-        return $this->_return($this->_string);
+        return $this->returnString($this->string);
     }
     /**
      * Function set sets the internal string.
@@ -87,7 +89,7 @@ class String extends stdClass
      */
     public function set($string)
     {
-        $this->_string = $this->_toString($string);
+        $this->string = $this->toString($string);
     }
     /**
      * Function instances itself from xml serialized version of the object.
@@ -119,8 +121,8 @@ class String extends stdClass
      */
     public function isempty()
     {
-        if (isset($this->_string)) {
-            return (!empty($this->_string));
+        if (isset($this->string)) {
+            return (!empty($this->string));
         }
 
         return true;
@@ -137,7 +139,7 @@ class String extends stdClass
     public function random($length = 10)
     {
         if (!is_numeric($length)) {
-            throw new Exception('Non numeric parameter');
+            throw new \Exception('Non numeric parameter');
         }
 
         $base=str_shuffle(md5(microtime()));
@@ -158,7 +160,7 @@ class String extends stdClass
         }
 
  
-        return $this->_return(str_shuffle($returnString));
+        return $this->returnString(str_shuffle($returnString));
 
     }
     /**
@@ -171,7 +173,7 @@ class String extends stdClass
      */
     public function setMutable($mutable)
     {
-        $this->_mutable = $mutable;
+        $this->mutable = $mutable;
     }
     /**
      * Function concat joins string passed to internal string
@@ -181,28 +183,27 @@ class String extends stdClass
      * @param string
      * @param string optional
      *
-     * @return string
+     * @return
      */
     public function concat($string, $string2 = null)
     {
         if ($string == null) {
-            throw new Exception('Empty parameter 1');
+            throw new \Exception('Empty parameter 1');
         }
         
         if ($string2 != null) {
              $returnString = $string;
              $returnString .= $string2;
-             return $this->_return($returnString);
-
+             return $this->returnString($returnString);
         }
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
-        $returnString = $this->_string;
+        $returnString = $this->string;
         $returnString.= $string;
         
-        return $this->_return($returnString);
+        return $this->returnString($returnString);
     }
     /**
      * Function string contains substring
@@ -215,18 +216,18 @@ class String extends stdClass
      */
     public function contains($searchString, $ignorecase = false)
     {
-        $searchString = $this->_toString($searchString);
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        $searchString = $this->toString($searchString);
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
         if ($ignorecase == false) {
-            if (strpos($this->_string, $searchString) === false) {
+            if (strpos($this->string, $searchString) === false) {
                 return false;
             }
         }
             
-        if (stripos($this->_string, $searchString) === false) {
+        if (stripos($this->string, $searchString) === false) {
             return false;
         }
             
@@ -245,17 +246,17 @@ class String extends stdClass
     public function uc($string = null)
     {
         if ($string != null) {
-            return $this->_return(
+            return $this->returnString(
                 strtoupper($string)
             );
         }
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
         
-        return $this->_return(
-            strtoupper($this->_string)
+        return $this->returnString(
+            strtoupper($this->string)
         );
     }
     /**
@@ -267,18 +268,18 @@ class String extends stdClass
      *
      * @return string
      */
-    public function strstr($needle, $before_needle = false)
+    public function strstr($needle, $beforeneedle = false)
     {
-        $needle = $this->_toString($needle);
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        $needle = $this->toString($needle);
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
-        if ($before_needle == false) {
-            return $this->_return(strstr($this->_string, $needle));
+        if ($beforeneedle == false) {
+            return $this->returnString(strstr($this->string, $needle));
         }
         
-        return $this->_return(strstr($this->_string, $needle, $before_needle));
+        return $this->returnString(strstr($this->string, $needle, $beforeneedle));
     }
     /**
      * Function substr
@@ -292,13 +293,13 @@ class String extends stdClass
     public function substr($start, $length = null)
     {
         if ($length == null) {
-            return $this->_return(substr($this->_string, $start));
+            return $this->returnString(substr($this->string, $start));
         }
         
-        return $this->_return(substr($this->_string, $start, $length));
+        return $this->returnString(substr($this->string, $start, $length));
     }
     /**
-     * Function shuffle wrapper for str_shuffle optional parameter
+     * Function shuffle wrapper for strshuffle optional parameter
      * returned as shuffle or set the value of the internal if
      * setmutable is true.
      *
@@ -309,18 +310,18 @@ class String extends stdClass
     public function shuffle($string = null)
     {
         if ($string !=null) {
-             return $this->_return(
-                 str_shuffle($string)
+             return $this->returnString(
+                 strshuffle($string)
              );
         }
 
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
         
-        return $this->_return(
-            str_shuffle($this->_string)
+        return $this->returnString(
+            str_shuffle($this->string)
         );
     }
     /**
@@ -336,20 +337,20 @@ class String extends stdClass
     public function reverse($string = null)
     {
         if ($string !=null) {
-             return $this->_return(
+             return $this->returnString(
                  strrev($string)
              );
         }
 
 
          
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
         
-        return $this->_return(
-            strrev($this->_string)
+        return $this->returnString(
+            strrev($this->string)
         );
     }
     /**
@@ -365,24 +366,23 @@ class String extends stdClass
     public function lc($string = null)
     {
         if ($string != null) {
-            return $this->_return(
-                strtolower($this->_string)
+            return $this->returnString(
+                strtolower($this->string)
             );
-
         }
     
          
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
         
-        return $this->_return(
-            strtolower($this->_string)
+        return $this->returnString(
+            strtolower($this->string)
         );
     }
     /**
-     * Function replace wrapper for str_replace
+     * Function replace wrapper for strreplace
      *
      * @param string
      * @param string
@@ -391,38 +391,38 @@ class String extends stdClass
      *
      * @return
      */
-    public function replace($search, $replace, $count = null, $ignore_case = false)
+    public function replace($search, $replace, $count = null, $ignorecase = false)
     {
-        $search = $this->_toString($search);
-        $replace = $this->_toString($replace);
+        $search = $this->toString($search);
+        $replace = $this->toString($replace);
 
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
-        if ($count == null && $ignore_case == true) {
-                return $this->_return(
-                    str_ireplace($search, $replace, $this->_string)
+        if ($count == null && $ignorecase == true) {
+                return $this->returnString(
+                    str_ireplace($search, $replace, $this->string)
                 );
         }
-        if ($count == null && $ignore_case == false) {
-            return $this->_return(
-                str_replace($search, $replace, $this->_string)
+        if ($count == null && $ignorecase == false) {
+            return $this->returnString(
+                str_replace($search, $replace, $this->string)
             );
         }
 
-        if ($ignore_case == true) {
-            return $this->_return(
-                str_ireplace($search, $replace, $this->_string, $count)
+        if ($ignorecase == true) {
+            return $this->returnString(
+                str_ireplace($search, $replace, $this->string, $count)
             );
         }
             
-            return $this->_return(
-                str_replace($search, $replace, $this->_string, $count)
+            return $this->returnString(
+                str_replace($search, $replace, $this->string, $count)
             );
     }
     /**
-     * Function similar wrapper for similar_text
+     * Function similar wrapper for similartext
      *
      *
      * @param string
@@ -430,8 +430,8 @@ class String extends stdClass
      */
     public function similar($string)
     {
-        $string = $this->_toString($string);
-        return $this->_return(similar_text($this->get(), $string));
+        $string = $this->toString($string);
+        return $this->returnString(similartext($this->get(), $string));
     }
     /**
      * Function compares string wrapper for ==
@@ -442,8 +442,8 @@ class String extends stdClass
      */
     public function compare($string)
     {
-        $string = $this->_toString($string);
-        if ($this->_string == $string) {
+        $string = $this->toString($string);
+        if ($this->string == $string) {
             return true;
         }
         
@@ -461,7 +461,7 @@ class String extends stdClass
         if ($string !=null) {
             return intval($string);
         }
-        return intval($this->_string);
+        return intval($this->string);
     }
     /**
      * Function length Wrapper for strlen
@@ -475,10 +475,10 @@ class String extends stdClass
               return strlen($string);
         }
         
-        return strlen($this->_string);
+        return strlen($this->string);
     }
     /**
-     * Function wordCount wrapper for str_word_count
+     * Function wordCount wrapper for strwordcount
      * if optional parameter is set returns the word of parameter
      *
      *
@@ -490,11 +490,11 @@ class String extends stdClass
         if ($string !=null) {
             return str_word_count($string);
         }
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
-        return str_word_count($this->_string);
+        return str_word_count($this->string);
     }
     /**
      *  Guid generator
@@ -502,14 +502,14 @@ class String extends stdClass
      */
     public function guid()
     {
-        if (function_exists('com_create_guid')) {
-                return $this->_return(trim(
+        if (function_exists('comcreateguid')) {
+                return $this->returnString(trim(
                     com_create_guid(),
                     '{}'
                 ));
         }
 
-              return $this->_return(
+              return $this->returnString(
                   $this->random(8) ."-".
                   $this->random(4) ."-".
                   $this->random(4) ."-".
@@ -525,86 +525,86 @@ class String extends stdClass
      */
     public function quote($charlist = null)
     {
-        $charlist = $this->_toString($charlist);
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        $charlist = $this->toString($charlist);
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
         if ($cslashes != null) {
-            return $this->_return(addcslashes($this->_string, $charlist));
+            return $this->returnString(addcslashes($this->string, $charlist));
         }
         
-        return $this->_return(addslashes($this->_string));
+        return $this->returnString(addslashes($this->string));
     }
     /**
      *  Wrapper for rtrim or ltrim
      *
      */
-    public function trim($character_mask = null, $left = false)
+    public function trim($charactermask = null, $left = false)
     {
-        $character_mask = $this->_toString($character_mask);
-        if ($left == false && $character_mask != null) {
-                return $this->_return(
-                    rtrim($this->_string, $character_mask)
+        $charactermask = $this->toString($charactermask);
+        if ($left == false && $charactermask != null) {
+                return $this->returnString(
+                    rtrim($this->string, $charactermask)
                 );
         }
             
-        if ($left == false && $character_mask == null) {
-                return $this->_return(
-                    rtrim($this->_string)
+        if ($left == false && $charactermask == null) {
+                return $this->returnString(
+                    rtrim($this->string)
                 );
         }
         
 
-        if ($left == true && $character_mask == null) {
-            return $this->_return(
-                ltrim($this->_string)
+        if ($left == true && $charactermask == null) {
+            return $this->returnString(
+                ltrim($this->string)
             );
         }
          
-            return $this->_return(
-                ltrim($this->_string, $character_mask)
+            return $this->returnString(
+                ltrim($this->string, $charactermask)
             );
     }
     /**
-     *  Wrapper for str_split, explode, and split.
+     *  Wrapper for strsplit, explode, and split.
      *
      */
     public function split($delimiter = null, $limit = null)
     {
-        $delimiter = $this->_toString($delimiter);
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        $delimiter = $this->toString($delimiter);
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
         if ($delimiter == null && $limit == null) {
-            $this->_array = str_split($this->_string);
-            if ($this->_array === false) {
-                throw new Exception('Split_length is less than 1');
+            $this->array = str_split($this->string);
+            if ($this->array === false) {
+                throw new \Exception('Splitlength is less than 1');
             }
-            return $this->_array;
+            return $this->array;
         }
         if ($delimiter != null && $limit == null) {
-            $this->_array = explode($delimiter, $this->_string);
-            if ($this->_array === false) {
-                throw new Exception('Empty delimiter');
+            $this->array = explode($delimiter, $this->string);
+            if ($this->array === false) {
+                throw new \Exception('Empty delimiter');
             }
-            return explode($delimiter, $this->_string);
+            return explode($delimiter, $this->string);
         }
         if ($delimiter == null && $limit != null) {
-            return str_split($this->_string, $limit);
+            return str_split($this->string, $limit);
         }
         
-        return explode($delimiter, $this->_string, $limit);
+        return explode($delimiter, $this->string, $limit);
     }
     /**
-     * Function  _toString polymorphic
+     * Function  toString polymorphic
      *
      *
      * @param mixed
      * @return string
      */
-    private function _toString($string)
+    private function toString($string)
     {
         if ($string == null) {
             return null;
@@ -616,7 +616,7 @@ class String extends stdClass
         
         if (is_object($string)) {
             if (method_exists($string, "getObjectID")) {
-                if ($this->_objectid == $string->getObjectID()) {
+                if ($this->objectid == $string->getObjectID()) {
                     return $string->get();
                 }
             }
@@ -624,7 +624,7 @@ class String extends stdClass
                 
             
         
-        throw new Exception('String Parameter Error');
+        throw new \Exception('String Parameter Error');
     }
     /**
      * Return
@@ -632,12 +632,12 @@ class String extends stdClass
      * @param string
      * @return mixed
      */
-    private function _return($string)
+    private function returnString($string)
     {
-        if ($this->_mutable == true) {
-            $this->_string=$string;
+        if ($this->mutable == true) {
+            $this->string=$string;
         }
-        if ($this->_stringmode == false) {
+        if ($this->stringmode == false) {
             return $string;
         }
         
@@ -649,35 +649,35 @@ class String extends stdClass
      */
     public function token($token = null)
     {
-        if ($this->_string == null) {
-            throw new Exception('Empty string');
+        if ($this->string == null) {
+            throw new \Exception('Empty string');
         }
         
-        if ($this->_token == null) {
+        if ($this->token == null) {
             if ($token == null) {
-                throw new Exception('Empty token');
+                throw new \Exception('Empty token');
             }
         }
             
         
-        if ($this->_token != $token) {
-            $this->_token = $token;
-            $this->_array = array();
-            $looptok = strtok($this->_string, $this->_token);
+        if ($this->token != $token) {
+            $this->token = $token;
+            $this->array = array();
+            $looptok = strtok($this->string, $this->token);
             while ($looptok !== false) {
-                $this->_array[] = $looptok;
-                $looptok = strtok($this->_token);
+                $this->array[] = $looptok;
+                $looptok = strtok($this->token);
             }
         }
-        if ($this->_array == null) {
-            throw new Exception('Empty array');
+        if ($this->array == null) {
+            throw new \Exception('Empty array');
         }
         
-        $_position_in_string++;
-        if (($_position_in_string - 1) > count($this->_array)) {
+        $positioninstring++;
+        if (($positioninstring - 1) > count($this->array)) {
             return null;
         }
         
-        return $this->_return($this->_array[$position_in_string - 1]);
+        return $this->returnString($this->array[$positioninstring - 1]);
     }
 }

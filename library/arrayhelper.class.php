@@ -1,4 +1,6 @@
 <?php
+namespace completecontrol;
+
 /*
  * This file is part of completecontrol
  *
@@ -9,12 +11,12 @@
  * Feel free to edit as you please, and have fun.
  *
 */
-class ArrayHelper extends stdClass
+class ArrayHelper extends \stdClass
 {
 
-    private $_value = 7;
-    private $_objectid = '0715221d-59e8-9689-434093851da8';
-    private $_mutable = false;
+    private $value = 7;
+    private $objectid = '0715221d-59e8-9689-434093851da8';
+    private $mutable = false;
     /**
      * Function constructor
      *
@@ -25,7 +27,7 @@ class ArrayHelper extends stdClass
      */
     public function __construct($param = null)
     {
-        $this->_value = $param;
+        $this->value = $param;
     }
     /**
      * Function getObjectID unique id to this class.
@@ -35,7 +37,7 @@ class ArrayHelper extends stdClass
      */
     public function getObjectID()
     {
-        return $this->_objectid;
+        return $this->objectid;
     }
     /**
      * Function overload to create dyanmic function
@@ -60,7 +62,7 @@ class ArrayHelper extends stdClass
      */
     public function get()
     {
-        return $this->_value;
+        return $this->value;
     }
     /**
      * Function set sets the internal numeric
@@ -72,7 +74,7 @@ class ArrayHelper extends stdClass
      */
     public function set($parameter)
     {
-        $this->_value = $parameter;
+        $this->value = $parameter;
     }
     /**
      * Function setMutable sets changablity of the internal string.
@@ -86,10 +88,10 @@ class ArrayHelper extends stdClass
     public function setMutable($mutable)
     {
         if (!is_bool($mutable)) {
-            throw new Exception('Non boolean parameter');
+            throw new \Exception('Non boolean parameter');
         }
         
-        $this->_mutable = $mutable;
+        $this->mutable = $mutable;
     }
     /**
      * Function instances itself from xml serialized version of the object.
@@ -121,14 +123,14 @@ class ArrayHelper extends stdClass
     public function random($count = 1)
     {
         if ($count==1) {
-               $return_value=array_rand($this->_value, $count);
+               $returnvalue=arrayrand($this->value, $count);
 
-               $this->_value=$return_value;
+               $this->value=$returnvalue;
 
-               return $return_value[0];
+               return $returnvalue[0];
         }
     
-        return $this->_return(array_rand($this->_value, $count));
+        return $this->returnArray(arrayrand($this->value, $count));
     }
     /**
      * Function splits array into chunks defaults to half
@@ -139,14 +141,14 @@ class ArrayHelper extends stdClass
      */
     public function splitArray($size = null, $array = null)
     {
-        $temparray=$this->_value;
+        $temparray=$this->value;
         if (is_array($array)) {
             $temparray=$array;
         }
         if ($size==null) {
             $size=intval(count($temparray)/2);
         }
-        return $this->_return(
+        return $this->return(
             array_chuck($temparray, $size)
         );
     }
@@ -160,10 +162,10 @@ class ArrayHelper extends stdClass
     public function column($key = null)
     {
         if ($key==null) {
-            throw new Exception('Key Required');
+            throw new \Exception('Key Required');
         }
 
-        return $this->_return(array_column($this->_value, $key));
+        return $this->return(array_column($this->value, $key));
     }
     /**
      * Function combines array of keys with array of values
@@ -176,10 +178,10 @@ class ArrayHelper extends stdClass
     public function combined($keyArray, $valueArray)
     {
         if (!is_array($keyArray) || !is_array($valueArray)) {
-            throw new Exception('Invalid Parameters');
+            throw new \Exception('Invalid Parameters');
         }
 
-        return $this->_return(array_combine($keyArray, $valueArray));
+        return $this->return(array_combine($keyArray, $valueArray));
     }
     /**
      * Function counts the number of values and returns an array of counts of
@@ -189,7 +191,7 @@ class ArrayHelper extends stdClass
      */
     public function countValues()
     {
-        return $this->_return(array_count_values($this->_value));
+        return $this->return(array_count_values($this->value));
     }
     /**
      * Function create an array of sequence of indexes same value
@@ -198,7 +200,7 @@ class ArrayHelper extends stdClass
      */
     public function fill($startIndex, $endIndex, $value)
     {
-        return $this->_return(
+        return $this->returnArray(
             array_fill($startIndex, ($endIndex-$startIndex), $value)
         );
     }
@@ -210,13 +212,12 @@ class ArrayHelper extends stdClass
      */
     public function exchange($array = null)
     {
-        $tempArray=$this->_value;
+        $tempArray=$this->value;
 
         if (is_array($array)) {
             $tempArray=$array;
-
         }
-        return $this->_return(
+        return $this->return(
             array_flip($tempArray)
         );
 
@@ -230,16 +231,15 @@ class ArrayHelper extends stdClass
      */
     public function filter($callback, $array = null)
     {
-        $tempArray=$this->_value;
-        if (is_array($array)) {
+        $tempArray=$this->value;
+        if (isarray($array)) {
             $tempArray=$array;
-
         }
         if (!is_function($callback)) {
-            throw new Exception('Invalid Parameter');
+            throw new \Exception('Invalid Parameter');
         }
      
-        return $this->_return(
+        return $this->return(
             array_filter($tempArray, $callback, ARRAY_FILTER_USE_BOTH)
         );
 
@@ -253,17 +253,17 @@ class ArrayHelper extends stdClass
      */
     public function intersect($array, $array2 = null)
     {
-        $tempArray =$this->_value;
+        $tempArray =$this->value;
 
         if (is_array($array)) {
             $tempArray =$array2;
         }
 
         if (!is_array($array)) {
-            throw new Exception('Invalid Parameter');
+            throw new \Exception('Invalid Parameter');
         }
 
-        return $this->_return(
+        return $this->return(
             array_intersect($tempArray, $array)
         );
     }
@@ -275,19 +275,19 @@ class ArrayHelper extends stdClass
     public function keys($search = null, $array = null)
     {
         if ($array!=null && !is_array($array)) {
-            throw new Exception('Invalid Parameter');
+            throw new \Exception('Invalid Parameter');
         }
 
         if ($search!=null && $array!=null) {
-            return $this->_return(array_keys($array, $search));
+            return $this->returnArray(array_keys($array, $search));
         }
         if ($search==null && $array !=null) {
-            return $this->_return(array_keys($array));
+            return $this->returnArray(array_keys($array));
         }
         if ($search !=null && $array==null) {
-            return $this->_return(array_keys($this->value, $search));
+            return $this->returnArray(array_keys($this->value, $search));
         }
-            return $this->_return(array_keys($this->value));
+            return $this->returnArray(array_keys($this->value));
     }
     /**
      * Function returns values of array
@@ -297,28 +297,27 @@ class ArrayHelper extends stdClass
     public function values($search = null, $array = null)
     {
         if ($array!=null && !is_array($array)) {
-            throw new Exception('Invalid Parameter');
+            throw new \Exception('Invalid Parameter');
         }
         if ($array !=null && $search==null) {
-            return $this->_return(array_values($array));
+            return $this->return(array_values($array));
         }
         if ($array !=null && $search !=null) {
-            return $this->_return(
+            return $this->returnArray(
                 array_values(
                     array_search($search, $array)
                 )
             );
         }
         if ($search !=null) {
-            return $this->_return(
+            return $this->return(
                 array_values(
                     array_search($search, $this->value)
                 )
             );
-
         }
 
-            return $this->_return(array_values($this->value));
+            return $this->returnArray(array_values($this->value));
     }
     /**
      * Check if value in array
@@ -330,8 +329,8 @@ class ArrayHelper extends stdClass
      */
     public function in($value, $array = null)
     {
-        if ($array==null || (!is_array($array))) {
-             return in_array($value, $this->_value, true);
+        if ($array==null || (!isarray($array))) {
+             return in_array($value, $this->value, true);
         }
 
                return in_array($value, $array, true);
@@ -347,7 +346,7 @@ class ArrayHelper extends stdClass
     public function fromLine($deliminater, $string)
     {
 
-         return $this->_return(explode($deliminater, $string));
+         return $this->returnArray(explode($deliminater, $string));
 
     }
     /**
@@ -361,7 +360,7 @@ class ArrayHelper extends stdClass
     public function toLine($deliminater, $array = null)
     {
         if ($array==null || (!is_array($array))) {
-             return implode($deliminater, $this->_value);
+             return implode($deliminater, $this->value);
         }
          
              return implode($deliminater, $array);
@@ -376,7 +375,7 @@ class ArrayHelper extends stdClass
     public function compactVariables(...$values)
     {
 
-            return $this->_return(compact($values));
+            return $this->returnArray(compact($values));
     }
     /**
      * Function reduce the array into a single value
@@ -390,12 +389,12 @@ class ArrayHelper extends stdClass
     public function reduce($callback, $array = null)
     {
         if (!is_function($callback)) {
-            throw new Exception('Parameter 1 must be a function');
+            throw new \Exception('Parameter 1 must be a function');
         }
        
-        $temparray=$this->_value;
+        $temparray=$this->value;
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter 2 must be an array');
+            throw new \Exception('Parameter 2 must be an array');
         } else {
             $temparray=$array;
         }
@@ -411,17 +410,16 @@ class ArrayHelper extends stdClass
      */
     public function map($callback, $array = null)
     {
-        $temparray=$this->_value;
+        $temparray=$this->value;
         if (!is_function($callback)) {
-            throw new Exception('Invalid Parameter');
+            throw new \Exception('Invalid Parameter');
         }
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter 2 must be an array');
+            throw new \Exception('Parameter 2 must be an array');
         } else {
             $temparray=$array;
-
         }
-            return $this->_return(array_map($callback, $temparray));
+            return $this->returnArray(array_map($callback, $temparray));
     }
     /**
      * Function push element on to the front of an array
@@ -432,13 +430,13 @@ class ArrayHelper extends stdClass
      */
     public function unshift(...$values)
     {
-        $temparray=$this->_value;
+        $temparray=$this->value;
         foreach ($values as $value) {
                array_unshift($temparray, $value);
         }
 
-        if ($this->_mutable == true) {
-            $this->_value = $temparray;
+        if ($this->mutable == true) {
+            $this->value = $temparray;
         }
 
         return $temparray;
@@ -454,27 +452,24 @@ class ArrayHelper extends stdClass
      */
     public function push(...$values)
     {
-        $temparray=$this->_value;
+        $temparray=$this->value;
 
         if (count($values)>1) {
             if (is_array($values[0])) {
                 $temparray=array_unshift($values);
-
             }
         }
         foreach ($values as $value) {
-            $test_count=count($temparray);
+            $testcount=count($temparray);
 
-            $tested_count=array_push($temparray, $value);
+            $testedcount=array_push($temparray, $value);
     
-            if (($test_count+1) != $tested_count) {
-                 throw new Exception('Value could not be pushed');
+            if (($testcount+1) != $testedcount) {
+                 throw new \Exception('Value could not be pushed');
             }
-
         }
-        if ($this->_mutable == true) {
+        if ($this->mutable == true) {
             $this->value = $temparray;
-
         }
 
         return $temparray;
@@ -488,10 +483,10 @@ class ArrayHelper extends stdClass
      */
     public function pop($array = null)
     {
-        $tempArray=$this->_value;
+        $tempArray=$this->value;
 
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         } else {
             if ($array !=null && is_array($array)) {
                 $tempArray=$array;
@@ -499,19 +494,18 @@ class ArrayHelper extends stdClass
         }
         $returnValue=array_pop($tempArray);
 
-        if ($this->_mutable == true) {
-            $this->_value=$tempArray;
-
+        if ($this->mutable == true) {
+            $this->value=$tempArray;
         }
         return $returnValue;
     }
     /**
      * Function sort returns a sorted array
-     * sort_flag 0 SORT_REGULAR, 1 SORT_NUMERIC, 2 SORT_STRING
-     * 3 SORT_LOCALE_STRING,
-     * 4 SORT_NATURAL,
-     * 5 SORT_FLAG_CASE
-     * sort_options 0 VALUE, 1 MAINTAIN_KEY, 2 SORT_KEY
+     * sortflag 0 SORTREGULAR, 1 SORTNUMERIC, 2 SORTSTRING
+     * 3 SORTLOCALESTRING,
+     * 4 SORTNATURAL,
+     * 5 SORTFLAGCASE
+     * sortoptions 0 VALUE, 1 MAINTAINKEY, 2 SORTKEY
      *
      * @param int
      * @param mixed
@@ -519,20 +513,20 @@ class ArrayHelper extends stdClass
      * @return array
      */
     public function sort(
-        $sort_flag = 0,
-        $sort_option = 0,
+        $sortflag = 0,
+        $sortoption = 0,
         $reverse = false,
         $array = null
     ) {
-        $temparray=$this->_value;
+        $temparray=$this->value;
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         }
         if (is_array($array)) {
                 $temparray=$array;
         }
         $whichSort="sort";
-        switch ($sort_option){
+        switch ($sortoption) {
             case 0:
                 $whichSort="sort";
                 if ($reverse==true) {
@@ -552,12 +546,12 @@ class ArrayHelper extends stdClass
                 }
                 break;
             default:
-                throw new Exception('Invaild sort option');
+                throw new \Exception('Invaild sort option');
                 break;
         }
 
         $success=false;
-        switch ($sort_flag){
+        switch ($sortflag) {
             case 0:
                 $success=$whichSort($temparray,SORT_REGULAR);
                 break;
@@ -577,14 +571,14 @@ class ArrayHelper extends stdClass
                 $success=$whichSort($temparray,SORT_FLAG_CASE);
                 break;
             default:
-                throw new Exception('Invaild sort flag');
+                throw new \Exception('Invaild sort flag');
                 break;
         }
         if ($success==false) {
-            throw new Exception('Failed Sort');
+            throw new \Exception('Failed Sort');
         }
        
-           return $this->_return($temparray);
+           return $this->returnArray($temparray);
 
     }
     /**
@@ -597,14 +591,14 @@ class ArrayHelper extends stdClass
      */
     public function slice($start, $length, $array = null)
     {
-        $temparray=$this->_value;
+        $temparray=$this->value;
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         }
         if (is_array($array)) {
             $temparray=$array;
         }
-           return $this->_return(
+           return $this->return(
                array_slice($temparray, $start, $length)
            );
 
@@ -619,15 +613,15 @@ class ArrayHelper extends stdClass
     public function reverse($array = null)
     {
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         }
-        $temparray=$this->_value;
+        $temparray=$this->value;
 
         if (is_array($array)) {
             $temparray=$array;
         }
 
-           return $this->_return(
+           return $this->returnArray(
                array_reverse($temparray)
            );
     }
@@ -640,9 +634,9 @@ class ArrayHelper extends stdClass
      */
     public function shuffle($array = null)
     {
-        $tempArray=$this->_value;
+        $tempArray=$this->value;
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         } else {
             if ($array !=null && is_array($array)) {
                 $tempArray=$array;
@@ -651,11 +645,11 @@ class ArrayHelper extends stdClass
         $success=shuffle($tempArray);
  
         if ($success==false) {
-            throw new Exception('Shuffle failed');
+            throw new \Exception('Shuffle failed');
         }
 
-        if ($this->_mutable == true) {
-            $this->_value=$success;
+        if ($this->mutable == true) {
+            $this->value=$success;
         }
 
         return $success;
@@ -670,9 +664,9 @@ class ArrayHelper extends stdClass
      */
     public function end($array = null)
     {
-        $tempArray=$this->_value;
+        $tempArray=$this->value;
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         } else {
             if ($array !=null && is_array($array)) {
                 $tempArray=$array;
@@ -689,9 +683,9 @@ class ArrayHelper extends stdClass
      */
     public function shift($array = null)
     {
-        $tempArray=$this->_value;
+        $tempArray=$this->value;
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         } else {
             if ($array !=null && is_array($array)) {
                 $tempArray=$array;
@@ -699,9 +693,8 @@ class ArrayHelper extends stdClass
         }
         $returnValue=array_shift($tempArray);
 
-        if ($this->_mutable == true) {
-            $this->_value=$tempArray;
-
+        if ($this->mutable == true) {
+            $this->value=$tempArray;
         }
         return $returnValue;
    
@@ -717,10 +710,10 @@ class ArrayHelper extends stdClass
     {
 
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter must be an array');
+            throw new \Exception('Parameter must be an array');
         }
-           return $this->_return(
-               array_replace($this->_value, $array)
+           return $this->return(
+               array_replace($this->value, $array)
            );
 
     }
@@ -734,15 +727,15 @@ class ArrayHelper extends stdClass
      */
     public function unique($array = null)
     {
-        $temparray=$this->_value;
+        $temparray=$this->value;
 
         if ($array !=null && !is_array($array)) {
-            throw new Exception('Parameter 2 must be an array');
+            throw new \Exception('Parameter 2 must be an array');
         } else {
             $temparray=$array;
         }
 
-           return $this->_return(
+           return $this->return(
                array_unique($temparray)
            );
 
@@ -763,12 +756,12 @@ class ArrayHelper extends stdClass
                 $array[$key]=$value;
                 return true;
             }
-            if ($this->_value == null) {
-                   $this->_value =array();
+            if ($this->value == null) {
+                   $this->value =array();
             }
-                 $this->_value[$key]=$value;
+                 $this->value[$key]=$value;
                  return true;
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             return false;
         }
     }
@@ -785,11 +778,11 @@ class ArrayHelper extends stdClass
     {
         if (is_array($array)) {
             if ($this->hasKey($key, $array)==false) {
-                throw new Exception('Array does not contain key');
+                throw new \Exception('Array does not contain key');
             }
              return $array[$key];
         }
-                return $this->_value[$key];
+                return $this->value[$key];
 
     }
     /**
@@ -804,10 +797,9 @@ class ArrayHelper extends stdClass
     {
         if ($array !=null && is_array($array)) {
              return array_key_exists($key, $array);
-
         }
 
-            return array_key_exists($key, $this->_value);
+            return array_key_exists($key, $this->value);
     }
 
     /**
@@ -818,12 +810,11 @@ class ArrayHelper extends stdClass
      * @return array
      *
      */
-    private function _return($array)
+    private function returnArray($array)
     {
 
-        if ($this->_mutable == true) {
-            $this->_value=$array;
-
+        if ($this->mutable == true) {
+            $this->value=$array;
         }
 
 
