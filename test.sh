@@ -8,7 +8,7 @@
 ##########################################################################
 
 if [ ! -z "$1" ]
-then 
+then
         git add .
         git commit -m "$1"
 fi
@@ -54,7 +54,7 @@ phpcbf=`which phpcbf`
 
 if [ ! -z $phpcbf ]
 then
-      phpcbf --report=diff -vv -w --standard=PSR2 --no-patch ./library/ 
+      phpcbf --report=diff -vv -w --standard=PSR2 --no-patch ./library/
 fi
 
 phpcs=`which phpcs`
@@ -88,10 +88,10 @@ FILES=`ls ./library/*test.class.php`
                     	if [ $error -ne 0 ]
                     	then
                         	BADFILES="$BADFILES $file"
-		
-                    	fi 
-                    fi 
-              fi 
+
+                    	fi
+                    fi
+              fi
 
        errors=`expr $errors + $error`
     done
@@ -101,19 +101,19 @@ then
    cd ./library/
    git add *.php
          if [ ! -z "$1" ]
-         then 
+         then
             git commit -m "$1"
             git push
          fi
 else
      for file in $BADFILES
      do
-# Syntax errors will fail on the unit test also 
+# Syntax errors will fail on the unit test also
 # Show what failed by rerunning the unit test on the bad files
-
-         if [ -f $file ] 
-         then 
-            phpunit --verbose $file 
+# This needs to be rewritten
+         if [ -f $file ]
+         then
+            phpunit --verbose $file
             echo $file
          fi
      done
@@ -121,5 +121,3 @@ else
 fi
 
 exit
-
-
