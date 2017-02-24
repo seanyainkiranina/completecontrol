@@ -15,6 +15,7 @@ then
         git commit -m "$1"
 fi
 # Test to make sure php is in path
+# Test for php
 php=`which php`
 if [  -z $php ]
 then
