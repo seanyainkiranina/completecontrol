@@ -3,6 +3,8 @@
 #  Bash script to run unit testing and PSR2 formatting
 # Adding a argument uses the arguenent to commit the changes to git repo
 # if there are no unit or php test errors.
+#
+#
 ##########################################################################
 
 if [ ! -z "$1" ]
