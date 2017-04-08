@@ -90,7 +90,7 @@ class Decimal extends \stdClass
         if (!is_bool($mutable)) {
             throw new \Exception('Non boolean parameter');
         }
-        
+
         $this->mutable = $mutable;
     }
     /**
@@ -127,7 +127,7 @@ class Decimal extends \stdClass
         if (!is_bool($mode)) {
             throw new \Exception('Non boolean parameter');
         }
-        
+
         $this->decimalmode = $mode;
     }
     /**
@@ -142,13 +142,13 @@ class Decimal extends \stdClass
         if ($this->mutable === true) {
             $this->value = $parameter;
         }
-        
+
 
         if ($this->decimalmode === false) {
             return $parameter;
         }
-        
-        
+
+
         return new Decimal($parameter);
     }
     /**
@@ -163,7 +163,7 @@ class Decimal extends \stdClass
         if (is_numeric($parameter)) {
             return $parameter;
         }
-        
+
         if (is_object($parameter)) {
             if (method_exists($parameter, "getObjectID")) {
                 if ($this->objectid == $parameter->getObjectID()) {
@@ -171,9 +171,9 @@ class Decimal extends \stdClass
                 }
             }
         }
-                
-            
-        
+
+
+
         throw new \Exception('Invalid Parameter');
     }
     /**
@@ -189,12 +189,12 @@ class Decimal extends \stdClass
         if ($this->value != null) {
             $returnValue = $this->value;
         }
-        
+
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue + $this->toNumber($parameter);
         }
-        
-        
+
+
         return $this->returnDecimal($returnValue);
     }
     /**
@@ -216,7 +216,7 @@ class Decimal extends \stdClass
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue - $this->toNumber($parameter);
         }
-        
+
         return $this->returnDecimal($returnValue);
     }
     /**
@@ -238,7 +238,7 @@ class Decimal extends \stdClass
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue * $this->toNumber($parameter);
         }
-        
+
 
         return $this->returnDecimal($returnValue);
     }
@@ -255,7 +255,7 @@ class Decimal extends \stdClass
         if (count($parameters) == 0) {
             throw new \Exception("Invalid parameters");
         }
-        
+
         $returnValue = 0;
         if ($this->value != null) {
             $returnValue = $this->value;
@@ -265,7 +265,7 @@ class Decimal extends \stdClass
         foreach ($parameters as $parameter) {
             $returnValue = $returnValue / $this->toNumber($parameter);
         }
-        
+
         return $this->returnDecimal($returnValue);
     }
     /**
@@ -280,11 +280,11 @@ class Decimal extends \stdClass
         if ($this->value == null) {
             throw new \Exception("Invalid base");
         }
-        
+
         if ($parameter == null) {
             throw new \Exception("Invalid exponential");
         }
-        
+
 
         return $this->returnDecimal(
             pow($this->value, $this->toNumber($parameter))
@@ -303,14 +303,14 @@ class Decimal extends \stdClass
                 throw new \Exception("Parameter missing");
             }
         }
-            
-        
+
+
         if ($parameter == null) {
                 return $this->returnDecimal(
                     abs($this->value)
                 );
         }
-            
+
         return $this->returnDecimal(
             abs($this->toNumber($parameter))
         );
@@ -328,16 +328,32 @@ class Decimal extends \stdClass
                 throw new \Exception("Parameter missing");
             }
         }
-            
-        
-        if ($parameter == null) {
-              return $this->returnDecimal(
-                  round($this->value, $precision)
-              );
-        }
+
+         $_value_to_attempt_to_round=$this->value;
+
+         if ($parameter  !=null){
+              $_value_to_attempt_to_round=$parameter;
+            }
+
+
+           if (strlen(round($_value_to_attempt_to_round,$precision))==
+               strlen(number_format($_value_to_attempt_to_round,$precision))){
+
+                     $_value_to_attempt_to_round=round($_value_to_attempt_to_round,$precision);
+
+               }
+              elseif (substr(number_format($_value_to_attempt_to_round,$precision),-1,1)=="0"){
+
+                      $_value_to_attempt_to_round=round($_value_to_attempt_to_round,$precision);
+
+              }
+              else{
+                  $_value_to_attempt_to_round=floatval(number_format($_value_to_attempt_to_round,$precision));
+              }
+
 
               return $this->returnDecimal(
-                  round($parameter, $precision)
+                  $_value_to_attempt_to_round
               );
     }
 }
