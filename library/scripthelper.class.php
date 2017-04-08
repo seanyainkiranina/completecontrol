@@ -21,7 +21,7 @@ class ScriptHelper extends stdClass
     private $ruutime = null;
     private $microtime =null;
 
-
+    private static $object =null;
 
     /**
      * Function constructor
@@ -40,10 +40,33 @@ class ScriptHelper extends stdClass
               $this->microtime=microtime();
 
     }
+
+    public function __set($name,$value)
+    {
+
+            if (is_object($value))
+            {
+              $this->$name=$value;
+            }
+
+            if (class_exists($name))
+            {
+              if (is_null($value)){
+                 $this->$name = new $name();
+               }
+                else{
+                  $this->$name = new $name($value);
+               }
+            }
+
+
+            $this->$name=$value;
+
+    }
     /**
      * Accessor to swap on unset reloads the data.
      */
-    public function get($name)
+    public function __get($name)
     {
         switch ($name) {
             case "swap":
@@ -57,6 +80,10 @@ class ScriptHelper extends stdClass
             case "duplicate":
                 return $this;
         }
+        if (isset($this->name)){
+             return $this->name;
+        }
+        throw new \Exception('Invalid property');
     }
     /**
      * Function getObjectID unique id to this class.
@@ -122,10 +149,22 @@ class ScriptHelper extends stdClass
     private function usage()
     {
          $data = getrusage();
-         printr($data);
          $this->runswap = $data['runswap'];
          $this->rumajflt = $data['rumajflt'];
          $this->ruutime = $data['ruutime.tvsec'];
-        
+
+    }
+
+    static function instance(){
+
+        if (is_null(self::$object)){
+
+          self::$object= new get_class($this);
+
+
+        }
+
+         return self::$object;
+
     }
 }
