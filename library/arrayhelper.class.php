@@ -90,7 +90,7 @@ class ArrayHelper extends \stdClass
         if (!is_bool($mutable)) {
             throw new \Exception('Non boolean parameter');
         }
-        
+
         $this->mutable = $mutable;
     }
     /**
@@ -129,7 +129,7 @@ class ArrayHelper extends \stdClass
 
                return $returnvalue[0];
         }
-    
+
         return $this->returnArray(arrayrand($this->value, $count));
     }
     /**
@@ -232,13 +232,13 @@ class ArrayHelper extends \stdClass
     public function filter($callback, $array = null)
     {
         $tempArray=$this->value;
-        if (isarray($array)) {
+        if (is_array($array)) {
             $tempArray=$array;
         }
         if (!is_function($callback)) {
             throw new \Exception('Invalid Parameter');
         }
-     
+
         return $this->return(
             array_filter($tempArray, $callback, ARRAY_FILTER_USE_BOTH)
         );
@@ -329,7 +329,7 @@ class ArrayHelper extends \stdClass
      */
     public function in($value, $array = null)
     {
-        if ($array==null || (!isarray($array))) {
+        if ($array==null || (!is_array($array))) {
              return in_array($value, $this->value, true);
         }
 
@@ -362,7 +362,7 @@ class ArrayHelper extends \stdClass
         if ($array==null || (!is_array($array))) {
              return implode($deliminater, $this->value);
         }
-         
+
              return implode($deliminater, $array);
     }
     /**
@@ -391,7 +391,7 @@ class ArrayHelper extends \stdClass
         if (!is_function($callback)) {
             throw new \Exception('Parameter 1 must be a function');
         }
-       
+
         $temparray=$this->value;
         if ($array !=null && !is_array($array)) {
             throw new \Exception('Parameter 2 must be an array');
@@ -463,7 +463,7 @@ class ArrayHelper extends \stdClass
             $testcount=count($temparray);
 
             $testedcount=array_push($temparray, $value);
-    
+
             if (($testcount+1) != $testedcount) {
                  throw new \Exception('Value could not be pushed');
             }
@@ -577,7 +577,7 @@ class ArrayHelper extends \stdClass
         if ($success==false) {
             throw new \Exception('Failed Sort');
         }
-       
+
            return $this->returnArray($temparray);
 
     }
@@ -643,7 +643,7 @@ class ArrayHelper extends \stdClass
             }
         }
         $success=shuffle($tempArray);
- 
+
         if ($success==false) {
             throw new \Exception('Shuffle failed');
         }
@@ -697,7 +697,7 @@ class ArrayHelper extends \stdClass
             $this->value=$tempArray;
         }
         return $returnValue;
-   
+
     }
     /**
      * Function replace elements from passed array
